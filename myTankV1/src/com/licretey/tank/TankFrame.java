@@ -5,10 +5,11 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
 public class TankFrame extends Frame {
-    Tank tempTank; // tank对象
+    Tank tempTank;                              // tank对象
     Tank enemy;
+    private Bullet bullet;                      // 子弹
     public static final int GAME_WIDTH = 1000;  // 界面宽
-    public static final int GAME_HEIGHT = 800; // 界面高
+    public static final int GAME_HEIGHT = 800;  // 界面高
 
     public TankFrame(){
         this.setTitle("tank war");
@@ -19,8 +20,10 @@ public class TankFrame extends Frame {
         this.addKeyListener(new TankKeyListener());
 
         // 抽象到tank类中
-        this.tempTank = new Tank(100,100, Direction.D, Group.GOOD);
-        this.enemy = new Tank(300,200, Direction.D, Group.BAD);
+        this.tempTank = new Tank(100,100, Direction.D, Group.GOOD,this);
+        this.enemy = new Tank(300,200, Direction.D, Group.BAD,this);
+        // 添加子弹(不可省，放置bullet为空)
+        this.bullet = new Bullet(100,100,Direction.D,Group.GOOD);
     }
 
     // awt自动调用
@@ -31,6 +34,12 @@ public class TankFrame extends Frame {
         // 让这个方块动起来，就需要传入动态的x ，y坐标，并且不停的调用paint绘制（如下）
         //        g.fillRect(x,y,50,50);
         tempTank.paint(g);//x，y由局部变量抽出到一个对象中，这个对象自己去绘制
+        enemy.paint(g);
+        bullet.paint(g);
+    }
+
+    public void addBullet(Bullet bullet){
+        this.bullet = bullet;
     }
 
     private class TankKeyListener extends KeyAdapter {

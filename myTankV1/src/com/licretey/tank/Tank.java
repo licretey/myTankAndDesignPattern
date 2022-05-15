@@ -25,13 +25,16 @@ public class Tank {
     private boolean moving = false;
     // 使用枚举 区分敌我
     private Group group;
+    // 创建tank时，需要将frame传递过来（开火等操作时往fram上添加子弹等对象）、
+    TankFrame tf;
 
 
-    public Tank(int x, int y, Direction dir, Group group){
+    public Tank(int x, int y, Direction dir, Group group, TankFrame tf){
         this.x = x;
         this.y = y;
         this.dir = dir;     // 初始化移动方向，默认R
         this.group = group; // 确定好坏
+        this.tf = tf;
     }
 
     public int getX() {
@@ -73,7 +76,6 @@ public class Tank {
     /**
      * paint、keyPressed两种方法的核心思想就是，将操作物给对象自己去处理（键盘对象给tank，tank自己判断加减；画笔给tank，tank自己绘制位置）
      */
-
     // 自带绘制方法（根据自己的i位置信息绘制）
     public void paint(Graphics g) {
 //        g.fillRect(x,y,50,50);
@@ -144,6 +146,49 @@ public class Tank {
         setMainDir();
     }
 
+    public void keyReleased(KeyEvent e) {
+        int keyCode = e.getKeyCode();
+        int keyCoder = 0;
+        if(keyCode==KeyEvent.VK_LEFT || keyCode==KeyEvent.VK_A){
+            keyCoder = 1;
+        }else if(keyCode==KeyEvent.VK_RIGHT || keyCode==KeyEvent.VK_D){
+            keyCoder = 2;
+        }else if(keyCode==KeyEvent.VK_UP || keyCode==KeyEvent.VK_W) {
+            keyCoder = 3;
+        }else if(keyCode==KeyEvent.VK_DOWN || keyCode==KeyEvent.VK_S){
+            keyCoder = 4;
+        }else if(keyCode==KeyEvent.VK_CONTROL){
+            keyCoder = 5;
+        }
+
+        switch (keyCoder){
+            case 1:
+                this.bL = false;
+                break;
+            case 2:
+                this.bR = false;
+                break;
+            case 3:
+                this.bU = false;
+                break;
+            case 4:
+                this.bD = false;
+                break;
+            case 5:
+                this.fire();
+                break;
+        }
+
+        setMainDir();
+    }
+
+    // 开火
+    private void fire() {
+        // 使用tank的参数去创建一个子弹
+        Bullet bullet = new Bullet(x+5, y+5, dir, group);
+        this.tf.addBullet(bullet);
+    }
+
     private void setMainDir() {
         if(!bL && !bR && !bU && !bD){
             this.moving = false;
@@ -162,36 +207,5 @@ public class Tank {
                 this.dir = Direction.D;
             }
         }
-    }
-
-    public void keyReleased(KeyEvent e) {
-        int keyCode = e.getKeyCode();
-        int keyCoder = 0;
-        if(keyCode==KeyEvent.VK_LEFT || keyCode==KeyEvent.VK_A){
-            keyCoder = 1;
-        }else if(keyCode==KeyEvent.VK_RIGHT || keyCode==KeyEvent.VK_D){
-            keyCoder = 2;
-        }else if(keyCode==KeyEvent.VK_UP || keyCode==KeyEvent.VK_W) {
-            keyCoder = 3;
-        }else if(keyCode==KeyEvent.VK_DOWN || keyCode==KeyEvent.VK_S){
-            keyCoder = 4;
-        }
-
-        switch (keyCoder){
-            case 1:
-                this.bL = false;
-                break;
-            case 2:
-                this.bR = false;
-                break;
-            case 3:
-                this.bU = false;
-                break;
-            case 4:
-                this.bD = false;
-                break;
-        }
-
-        setMainDir();
     }
 }

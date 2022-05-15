@@ -6,10 +6,9 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 public class ResourceMgr {
-	// 不同方向的状态的图片
-	static BufferedImage goodTankL,goodTankR,goodTankU,goodTankD;
-	static BufferedImage badTankL,badTankR,badTankU,badTankD;
-	static BufferedImage bulletL,bulletR,bulletU,bulletD;
+	static BufferedImage goodTankL,goodTankR,goodTankU,goodTankD;	// 好坦克各个方向图片资源
+	static BufferedImage badTankL,badTankR,badTankU,badTankD;		// 坏坦克各个方向图片资源
+	static BufferedImage bulletL,bulletR,bulletU,bulletD;			// 子弹各个方向图片资源
 	public static BufferedImage[] explodes = new BufferedImage[16];
 
 	// 资源不应该反复读取磁盘加载，利用static仅读取一次即可

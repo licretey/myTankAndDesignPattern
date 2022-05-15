@@ -9,7 +9,17 @@ public class Bullet {
     private int x, y;                    // 位置
     private Direction dir;               // 方向
     private Group group;                 // 好坏
-    private static final int SPEED = 7; // 速度
+    private static final int SPEED = 7;  // 速度
+
+    public boolean isLive() {
+        return live;
+    }
+
+    public void setLive(boolean live) {
+        this.live = live;
+    }
+
+    private boolean live = true;         // 子弹是否从列表中删除
 
     public Bullet(int x, int y, Direction dir, Group group) {
         this.x = x;
@@ -54,6 +64,14 @@ public class Bullet {
             case D:
                 y += SPEED;
                 break;
+        }
+        boundsCheck();
+    }
+
+    // 边界检查
+    private void boundsCheck() {
+        if(x<0||y<30||x>TankFrame.GAME_WIDTH || y>TankFrame.GAME_HEIGHT){
+            this.live = false;
         }
     }
 }

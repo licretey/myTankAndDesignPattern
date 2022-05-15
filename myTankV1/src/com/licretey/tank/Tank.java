@@ -181,8 +181,10 @@ public class Tank {
 
     // 开火
     private void fire() {
+        int bulletX = x + ResourceMgr.goodTankU.getWidth()/2 - ResourceMgr.bulletU.getWidth()/2;
+        int bulletY = y + ResourceMgr.goodTankU.getHeight()/2 - ResourceMgr.bulletU.getHeight()/2;
         // 使用tank的参数去创建一个子弹
-        Bullet bullet = new Bullet(x+5, y+5, dir, group);
+        Bullet bullet = new Bullet(bulletX, bulletY, dir, group);
         TankFrame.SINGLE_FRAME.addBullet(bullet);
     }
 

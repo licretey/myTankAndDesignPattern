@@ -44,10 +44,13 @@ public class TankFrame extends Frame {
         //        g.fillRect(x,y,50,50);
         tempTank.paint(g);//x，y由局部变量抽出到一个对象中，这个对象自己去绘制
         enemy.paint(g);
-        bullets.forEach(bullet -> {
-//            if(bullet)
-            bullet.paint(g);
-        });
+        for (int i=0;i<bullets.size();i++){
+            if(!bullets.get(i).isLive()){
+                bullets.remove(i);
+            }else {
+                bullets.get(i).paint(g);
+            }
+        }
     }
 
     public void addBullet(Bullet bullet){

@@ -25,16 +25,13 @@ public class Tank {
     private boolean moving = false;
     // 使用枚举 区分敌我
     private Group group;
-    // 创建tank时，需要将frame传递过来（开火等操作时往fram上添加子弹等对象）、
-    TankFrame tf;
 
 
-    public Tank(int x, int y, Direction dir, Group group, TankFrame tf){
+    public Tank(int x, int y, Direction dir, Group group){
         this.x = x;
         this.y = y;
         this.dir = dir;     // 初始化移动方向，默认R
         this.group = group; // 确定好坏
-        this.tf = tf;
     }
 
     public int getX() {
@@ -186,7 +183,7 @@ public class Tank {
     private void fire() {
         // 使用tank的参数去创建一个子弹
         Bullet bullet = new Bullet(x+5, y+5, dir, group);
-        this.tf.addBullet(bullet);
+        TankFrame.SINGLE_FRAME.addBullet(bullet);
     }
 
     private void setMainDir() {

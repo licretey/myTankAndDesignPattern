@@ -10,8 +10,11 @@ public class TankFrame extends Frame {
     private Bullet bullet;                      // 子弹
     public static final int GAME_WIDTH = 1000;  // 界面宽
     public static final int GAME_HEIGHT = 800;  // 界面高
+    // 单例模式创建frame
+    public static final TankFrame SINGLE_FRAME = new TankFrame();
 
-    public TankFrame(){
+    // 单例模式创建frame
+    private TankFrame(){
         this.setTitle("tank war");
         this.setLocation(400,100); // 相对于屏幕window
         this.setSize(GAME_WIDTH,GAME_HEIGHT);
@@ -20,8 +23,8 @@ public class TankFrame extends Frame {
         this.addKeyListener(new TankKeyListener());
 
         // 抽象到tank类中
-        this.tempTank = new Tank(100,100, Direction.D, Group.GOOD,this);
-        this.enemy = new Tank(300,200, Direction.D, Group.BAD,this);
+        this.tempTank = new Tank(100,100, Direction.D, Group.GOOD);
+        this.enemy = new Tank(300,200, Direction.D, Group.BAD);
         // 添加子弹(不可省，放置bullet为空)
         this.bullet = new Bullet(100,100,Direction.D,Group.GOOD);
     }

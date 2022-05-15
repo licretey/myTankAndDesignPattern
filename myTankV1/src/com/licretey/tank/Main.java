@@ -4,8 +4,7 @@ import java.util.concurrent.TimeUnit;
 
 public class Main {
     public static void main(String[] args) {
-        TankFrame tf = new TankFrame();
-        tf.setVisible(true);
+        TankFrame.SINGLE_FRAME.setVisible(true);
 
         while (true){
             try {
@@ -13,7 +12,7 @@ public class Main {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            tf.repaint(); // repaint()会调用paint()
+            TankFrame.SINGLE_FRAME.repaint(); // repaint()会调用paint()
         }
 
     }

@@ -23,12 +23,15 @@ public class Tank {
     private boolean bL,bR,bU,bD;
     // tank是否在移动
     private boolean moving = false;
+    // 使用枚举 区分敌我
+    private Group group;
 
 
-    public Tank(int x, int y, Direction dir){
+    public Tank(int x, int y, Direction dir, Group group){
         this.x = x;
         this.y = y;
-        this.dir = dir;
+        this.dir = dir;     // 初始化移动方向，默认R
+        this.group = group; // 确定好坏
     }
 
     public int getX() {
@@ -71,25 +74,41 @@ public class Tank {
      * paint、keyPressed两种方法的核心思想就是，将操作物给对象自己去处理（键盘对象给tank，tank自己判断加减；画笔给tank，tank自己绘制位置）
      */
 
-    // 绘制方法
+    // 自带绘制方法（根据自己的i位置信息绘制）
     public void paint(Graphics g) {
 //        g.fillRect(x,y,50,50);
         //使用图片代替方块
-        switch (dir){
-            case L:
-                g.drawImage(ResourceMgr.goodTankL, x, y ,null);
-                break;
-            case R:
-                g.drawImage(ResourceMgr.goodTankR, x, y ,null);
-                break;
-            case U:
-                g.drawImage(ResourceMgr.goodTankU, x, y ,null);
-                break;
-            case D:
-                g.drawImage(ResourceMgr.goodTankD, x, y ,null);
-                break;
+        if(this.group==Group.GOOD){
+            switch (dir){
+                case L:
+                    g.drawImage(ResourceMgr.goodTankL, x, y ,null);
+                    break;
+                case R:
+                    g.drawImage(ResourceMgr.goodTankR, x, y ,null);
+                    break;
+                case U:
+                    g.drawImage(ResourceMgr.goodTankU, x, y ,null);
+                    break;
+                case D:
+                    g.drawImage(ResourceMgr.goodTankD, x, y ,null);
+                    break;
+            }
+        } else if(this.group==Group.BAD){
+            switch (dir){
+                case L:
+                    g.drawImage(ResourceMgr.badTankL, x, y ,null);
+                    break;
+                case R:
+                    g.drawImage(ResourceMgr.badTankR, x, y ,null);
+                    break;
+                case U:
+                    g.drawImage(ResourceMgr.badTankU, x, y ,null);
+                    break;
+                case D:
+                    g.drawImage(ResourceMgr.badTankD, x, y ,null);
+                    break;
+            }
         }
-
         this.move();//移动
     }
 

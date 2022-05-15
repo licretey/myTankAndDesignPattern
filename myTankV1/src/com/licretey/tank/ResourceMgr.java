@@ -6,6 +6,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 public class ResourceMgr {
+	// 不同方向的状态的图片
 	static BufferedImage goodTankL,goodTankR,goodTankU,goodTankD;
 	static BufferedImage badTankL,badTankR,badTankU,badTankD;
 	static BufferedImage bulletL,bulletR,bulletU,bulletD;

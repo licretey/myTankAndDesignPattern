@@ -6,6 +6,7 @@ import java.awt.event.KeyEvent;
 
 public class TankFrame extends Frame {
     Tank tempTank; // tank对象
+    Tank enemy;
     public static final int GAME_WIDTH = 1000;  // 界面宽
     public static final int GAME_HEIGHT = 800; // 界面高
 
@@ -18,7 +19,8 @@ public class TankFrame extends Frame {
         this.addKeyListener(new TankKeyListener());
 
         // 抽象到tank类中
-        this.tempTank = new Tank(100,100, Direction.D);
+        this.tempTank = new Tank(100,100, Direction.D, Group.GOOD);
+        this.enemy = new Tank(300,200, Direction.D, Group.BAD);
     }
 
     // awt自动调用

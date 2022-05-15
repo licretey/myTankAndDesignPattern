@@ -1,11 +1,13 @@
 package com.licretey.tank;
 
 import javax.imageio.ImageIO;
+import javax.naming.directory.DirContext;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Objects;
+import java.util.Random;
 
 /**
  * 面向对象：
@@ -21,8 +23,8 @@ public class Tank {
     private Direction dir = Direction.R;
     // 几个变量，用于记录键盘的按下状态
     private boolean bL,bR,bU,bD;
-    // tank是否在移动
-    private boolean moving = false;
+    // enmy默认在移动
+    private boolean moving = true;
     // 使用枚举 区分敌我
     private Group group;
     // 标志tank是否死亡
@@ -30,6 +32,14 @@ public class Tank {
 
     public boolean isLive() {
         return live;
+    }
+
+    public Group getGroup() {
+        return group;
+    }
+
+    public void setGroup(Group group) {
+        this.group = group;
     }
 
     public void setLive(boolean live) {
@@ -78,7 +88,9 @@ public class Tank {
                 break;
         }
 
-        // 添加敌人tank随机前进方向
+        // 更新敌人tank随机前进方向
+        this.dir = Direction.randomDir();
+        fire();
     }
 
     /**

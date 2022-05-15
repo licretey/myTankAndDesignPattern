@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TankFrame extends Frame {
-    Tank tempTank;                              // tank对象
+    Player planyer;                              // tank对象
     Tank enemy;
     private List<Bullet> bullets;                      // 子弹容器
     public static final int GAME_WIDTH = 1000;  // 界面宽
@@ -25,7 +25,7 @@ public class TankFrame extends Frame {
         this.addKeyListener(new TankKeyListener());
 
         // 抽象到tank类中
-        this.tempTank = new Tank(100,100, Direction.D, Group.GOOD);
+        this.planyer = new Player(100,100, Direction.D, Group.GOOD);
         this.enemy = new Tank(300,200, Direction.D, Group.BAD);
         bullets = new ArrayList<>();
     }
@@ -42,7 +42,7 @@ public class TankFrame extends Frame {
         // 绘制方块（x,y相对于窗口）
         // 让这个方块动起来，就需要传入动态的x ，y坐标，并且不停的调用paint绘制（如下）
         //        g.fillRect(x,y,50,50);
-        tempTank.paint(g);//x，y由局部变量抽出到一个对象中，这个对象自己去绘制
+        planyer.paint(g);//x，y由局部变量抽出到一个对象中，这个对象自己去绘制
         enemy.paint(g);
         for (int i=0;i<bullets.size();i++){
             // 碰撞检查
@@ -65,13 +65,13 @@ public class TankFrame extends Frame {
         @Override
         public void keyPressed(KeyEvent e) {
             // 如果创建了tank对象，对键盘的监听也交由这个对象自己来完成
-            tempTank.keyPressed(e);
+            planyer.keyPressed(e);
         }
 
         @Override
         public void keyReleased(KeyEvent e) {
             // 如果创建了tank对象，对键盘的监听也交由这个对象自己来完成
-            tempTank.keyReleased(e);
+            planyer.keyReleased(e);
         }
     }
 

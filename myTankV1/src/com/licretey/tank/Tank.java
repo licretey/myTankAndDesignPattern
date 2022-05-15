@@ -77,6 +77,8 @@ public class Tank {
                 y += SPEED;
                 break;
         }
+
+        // 添加敌人tank随机前进方向
     }
 
     /**
@@ -87,107 +89,24 @@ public class Tank {
         if(!this.isLive()) return; //若死亡不再绘制
 //        g.fillRect(x,y,50,50);
         //使用图片代替方块
-        if(this.group==Group.GOOD){
-            switch (dir){
-                case L:
-                    g.drawImage(ResourceMgr.goodTankL, x, y ,null);
-                    break;
-                case R:
-                    g.drawImage(ResourceMgr.goodTankR, x, y ,null);
-                    break;
-                case U:
-                    g.drawImage(ResourceMgr.goodTankU, x, y ,null);
-                    break;
-                case D:
-                    g.drawImage(ResourceMgr.goodTankD, x, y ,null);
-                    break;
-            }
-        } else if(this.group==Group.BAD){
-            switch (dir){
-                case L:
-                    g.drawImage(ResourceMgr.badTankL, x, y ,null);
-                    break;
-                case R:
-                    g.drawImage(ResourceMgr.badTankR, x, y ,null);
-                    break;
-                case U:
-                    g.drawImage(ResourceMgr.badTankU, x, y ,null);
-                    break;
-                case D:
-                    g.drawImage(ResourceMgr.badTankD, x, y ,null);
-                    break;
-            }
+        switch (dir){
+            case L:
+                g.drawImage(ResourceMgr.badTankL, x, y ,null);
+                break;
+            case R:
+                g.drawImage(ResourceMgr.badTankR, x, y ,null);
+                break;
+            case U:
+                g.drawImage(ResourceMgr.badTankU, x, y ,null);
+                break;
+            case D:
+                g.drawImage(ResourceMgr.badTankD, x, y ,null);
+                break;
         }
         this.move();//移动
     }
 
-    // 根据按键移动
-    public void keyPressed(KeyEvent e) {
-        int keyCode = e.getKeyCode();
-        int keyCoder = 0;
-        if(keyCode==KeyEvent.VK_LEFT || keyCode==KeyEvent.VK_A){
-            keyCoder = 1;
-        }else if(keyCode==KeyEvent.VK_RIGHT || keyCode==KeyEvent.VK_D){
-            keyCoder = 2;
-        }else if(keyCode==KeyEvent.VK_UP || keyCode==KeyEvent.VK_W) {
-            keyCoder = 3;
-        }else if(keyCode==KeyEvent.VK_DOWN || keyCode==KeyEvent.VK_S){
-            keyCoder = 4;
-        }
 
-        switch (keyCoder){
-            case 1:
-                this.bL = true;
-                break;
-            case 2:
-                this.bR = true;
-                break;
-            case 3:
-                this.bU = true;
-                break;
-            case 4:
-                this.bD = true;
-                break;
-        }
-        // 计算最终方向
-        setMainDir();
-    }
-
-    public void keyReleased(KeyEvent e) {
-        int keyCode = e.getKeyCode();
-        int keyCoder = 0;
-        if(keyCode==KeyEvent.VK_LEFT || keyCode==KeyEvent.VK_A){
-            keyCoder = 1;
-        }else if(keyCode==KeyEvent.VK_RIGHT || keyCode==KeyEvent.VK_D){
-            keyCoder = 2;
-        }else if(keyCode==KeyEvent.VK_UP || keyCode==KeyEvent.VK_W) {
-            keyCoder = 3;
-        }else if(keyCode==KeyEvent.VK_DOWN || keyCode==KeyEvent.VK_S){
-            keyCoder = 4;
-        }else if(keyCode==KeyEvent.VK_CONTROL){
-            keyCoder = 5;
-        }
-
-        switch (keyCoder){
-            case 1:
-                this.bL = false;
-                break;
-            case 2:
-                this.bR = false;
-                break;
-            case 3:
-                this.bU = false;
-                break;
-            case 4:
-                this.bD = false;
-                break;
-            case 5:
-                this.fire();
-                break;
-        }
-
-        setMainDir();
-    }
 
     // 开火
     private void fire() {
@@ -196,26 +115,6 @@ public class Tank {
         // 使用tank的参数去创建一个子弹
         Bullet bullet = new Bullet(bulletX, bulletY, dir, group);
         TankFrame.SINGLE_FRAME.addBullet(bullet);
-    }
-
-    private void setMainDir() {
-        if(!bL && !bR && !bU && !bD){
-            this.moving = false;
-        }else {
-            this.moving = true;
-            if(bL && !bR && !bU && !bD){
-                this.dir = Direction.L;
-            }
-            if(!bL && bR && !bU && !bD){
-                this.dir = Direction.R;
-            }
-            if(!bL && !bR && bU && !bD){
-                this.dir = Direction.U;
-            }
-            if(!bL && !bR && !bU && bD){
-                this.dir = Direction.D;
-            }
-        }
     }
 
     public void die() {

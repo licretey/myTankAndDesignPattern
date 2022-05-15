@@ -3,11 +3,13 @@ package com.licretey.tank;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+import java.util.List;
 
 public class TankFrame extends Frame {
     Tank tempTank;                              // tank对象
     Tank enemy;
-    private Bullet bullet;                      // 子弹
+    private List<Bullet> bullets;                      // 子弹容器
     public static final int GAME_WIDTH = 1000;  // 界面宽
     public static final int GAME_HEIGHT = 800;  // 界面高
     // 单例模式创建frame
@@ -25,24 +27,31 @@ public class TankFrame extends Frame {
         // 抽象到tank类中
         this.tempTank = new Tank(100,100, Direction.D, Group.GOOD);
         this.enemy = new Tank(300,200, Direction.D, Group.BAD);
-        // 添加子弹(不可省，放置bullet为空)
-        this.bullet = new Bullet(100,100,Direction.D,Group.GOOD);
+        bullets = new ArrayList<>();
     }
 
     // awt自动调用
     // Graphics由系统提供
     @Override
     public void paint(Graphics g) {
+        Color color = g.getColor();
+        g.setColor(Color.WHITE);
+        g.drawString("bullets:"+bullets.size(),10,50);
+        g.setColor(color); //切回原来的画笔颜色
+
         // 绘制方块（x,y相对于窗口）
         // 让这个方块动起来，就需要传入动态的x ，y坐标，并且不停的调用paint绘制（如下）
         //        g.fillRect(x,y,50,50);
         tempTank.paint(g);//x，y由局部变量抽出到一个对象中，这个对象自己去绘制
         enemy.paint(g);
-        bullet.paint(g);
+        bullets.forEach(bullet -> {
+//            if(bullet)
+            bullet.paint(g);
+        });
     }
 
     public void addBullet(Bullet bullet){
-        this.bullet = bullet;
+        this.bullets.add(bullet);
     }
 
     private class TankKeyListener extends KeyAdapter {

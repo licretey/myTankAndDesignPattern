@@ -78,6 +78,7 @@ public class Bullet {
 
     // 简易碰撞检查:
     public void collidesWithTank(Tank tank){
+        if(!tank.isLive()) return; // 不同死亡的tank进行检查
         Rectangle rect = new Rectangle(x,y,
                 ResourceMgr.bulletU.getWidth(),ResourceMgr.bulletU.getHeight());
         Rectangle rectTank = new Rectangle(tank.getX(),tank.getY(),

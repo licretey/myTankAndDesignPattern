@@ -8,10 +8,10 @@ import java.util.List;
 
 public class TankFrame extends Frame {
     Player planyer;                              // tank对象
-    Tank enemy;
-    private List<Bullet> bullets;                      // 子弹容器
-    public static final int GAME_WIDTH = 1000;  // 界面宽
-    public static final int GAME_HEIGHT = 800;  // 界面高
+    private List<Bullet> bullets;                // 子弹容器
+    private List<Tank> enmeys;                   // 敌人容器
+    public static final int GAME_WIDTH = 1000;   // 界面宽
+    public static final int GAME_HEIGHT = 800;   // 界面高
     // 单例模式创建frame
     public static final TankFrame SINGLE_FRAME = new TankFrame();
 
@@ -24,10 +24,20 @@ public class TankFrame extends Frame {
         // 添加键盘监听
         this.addKeyListener(new TankKeyListener());
 
+
+        initGamreObjects();
+    }
+
+    // 初始化游戏对象
+    private void initGamreObjects() {
         // 抽象到tank类中
         this.planyer = new Player(100,100, Direction.D, Group.GOOD);
-        this.enemy = new Tank(300,200, Direction.D, Group.BAD);
         bullets = new ArrayList<>();
+        enmeys = new ArrayList<>();
+        for (int i = 0; i < 10; i++) {
+            Tank enmey = new Tank(300+50*i, 200, Direction.D, Group.BAD);
+            enmeys.add(enmey);
+        }
     }
 
     // awt自动调用
@@ -37,16 +47,27 @@ public class TankFrame extends Frame {
         Color color = g.getColor();
         g.setColor(Color.WHITE);
         g.drawString("bullets:"+bullets.size(),10,50);
+        g.drawString("enmeys:"+enmeys.size(),10,60);
         g.setColor(color); //切回原来的画笔颜色
 
         // 绘制方块（x,y相对于窗口）
         // 让这个方块动起来，就需要传入动态的x ，y坐标，并且不停的调用paint绘制（如下）
         //        g.fillRect(x,y,50,50);
         planyer.paint(g);//x，y由局部变量抽出到一个对象中，这个对象自己去绘制
-        enemy.paint(g);
+        for (int i = 0; i < enmeys.size(); i++) {
+            // 删除死亡tank
+            if(!enmeys.get(i).isLive()){
+                enmeys.remove(i);
+            }else {
+                enmeys.get(i).paint(g);
+            }
+        }
         for (int i=0;i<bullets.size();i++){
-            // 碰撞检查
-            bullets.get(i).collidesWithTank(enemy);
+            // 多个tank的碰撞检查
+            for (int j = 0; j < enmeys.size(); j++) {
+                bullets.get(i).collidesWithTank(enmeys.get(j));
+                bullets.get(i).collidesWithTank(planyer); // 敌人的子弹检测是否碰到自己
+            }
             // 越界删除
             if(!bullets.get(i).isLive()){
                 bullets.remove(i);

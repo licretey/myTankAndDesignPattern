@@ -18,17 +18,22 @@ public class Tank {
     // 位置信息
     private int x , y;
     // 速度
-    private static final int SPEED = 3;
+    private static final int SPEED = 4;
     // 方向
     private Direction dir = Direction.R;
     // 几个变量，用于记录键盘的按下状态
     private boolean bL,bR,bU,bD;
-    // enmy默认在移动
+    // enmey默认在移动
     private boolean moving = true;
     // 使用枚举 区分敌我
     private Group group;
     // 标志tank是否死亡
     private boolean live = true;
+    // 记录越界前的位置
+    private int oldX, oldY;
+    // tank图片宽度高度
+    private int width, height;
+
 
     public boolean isLive() {
         return live;
@@ -51,6 +56,10 @@ public class Tank {
         this.y = y;
         this.dir = dir;     // 初始化移动方向，默认R
         this.group = group; // 确定好坏
+        this.oldX = x;
+        this.oldY = y;
+        this.width = ResourceMgr.badTankU.getWidth();
+        this.height = ResourceMgr.badTankU.getHeight();
     }
 
     public int getX() {
@@ -73,6 +82,8 @@ public class Tank {
     // 移动
     private void move() {
         if(!this.moving) return;
+        oldX = x; // 记录上一个位置
+        oldY = y;
         switch (dir){
             case L:
                 x -= SPEED;
@@ -87,6 +98,7 @@ public class Tank {
                 y += SPEED;
                 break;
         }
+        boundsCheck(); //边界检查
 
         // 随机情况中符合特定条件触发更新方向（降低换向频率）
         if(random.nextInt(100)>95) {
@@ -103,7 +115,6 @@ public class Tank {
     // 自带绘制方法（根据自己的i位置信息绘制）
     public void paint(Graphics g) {
         if(!this.isLive()) return; //若死亡不再绘制
-//        g.fillRect(x,y,50,50);
         //使用图片代替方块
         switch (dir){
             case L:
@@ -122,7 +133,18 @@ public class Tank {
         this.move();//移动
     }
 
+    // 边界检查
+    private void boundsCheck() {
+        if(x<0 || y<30 || x+width>TankFrame.GAME_WIDTH || y+height>TankFrame.GAME_HEIGHT){
+            this.back();
+        }
+    }
 
+    // 回到上一个位置
+    private void back() {
+        x = oldX;
+        y = oldY;
+    }
 
     // 开火
     private void fire() {

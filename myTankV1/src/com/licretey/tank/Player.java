@@ -32,6 +32,14 @@ public class Player {
         this.live = live;
     }
 
+    public Group getGroup() {
+        return group;
+    }
+
+    public void setGroup(Group group) {
+        this.group = group;
+    }
+
     public Player(int x, int y, Direction dir, Group group){
         this.x = x;
         this.y = y;

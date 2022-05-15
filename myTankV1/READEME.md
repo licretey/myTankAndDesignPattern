@@ -12,4 +12,7 @@
 + addBullet3 使用list添加多个子弹
 + borderChecking 子弹边界检查
 + addBomb 碰撞检测
-+ enmyMove 添加敌人移动1: 拆分敌人tank与操作tank
++ enmeyMove  添加敌人移动1: 拆分敌人tank与操作tank
++ enmeyMove2 添加敌人移动2: enmey移动并发射子弹
++ enmeyMove3 添加敌人移动3: 处理敌人更新方向与开火太频繁问题
++ tankBorderCheck tank的边界检查

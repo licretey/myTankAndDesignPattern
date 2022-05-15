@@ -78,7 +78,7 @@ public class Bullet {
 
     // 简易碰撞检查:
     public void collidesWithTank(Tank tank){
-        if(!tank.isLive()) return; // 不同死亡的tank进行检查
+        if(!this.isLive() && !tank.isLive()) return; // 子弹未死且不与死亡的tank进行检查
         if(this.group == tank.getGroup()) return; // 相同阵营子弹对tank无效
         Rectangle rect = new Rectangle(x,y,
                 ResourceMgr.bulletU.getWidth(),ResourceMgr.bulletU.getHeight());
@@ -88,6 +88,21 @@ public class Bullet {
         if(rect.intersects(rectTank)){
             this.die();
             tank.die();
+        }
+
+    }
+
+    public void collidesWithTank(Player player){
+        if(!this.isLive() && !player.isLive()) return; // 子弹未死且不与死亡的tank进行检查
+        if(this.group == player.getGroup()) return; // 相同阵营子弹对tank无效
+        Rectangle rect = new Rectangle(x,y,
+                ResourceMgr.bulletU.getWidth(),ResourceMgr.bulletU.getHeight());
+        Rectangle rectTank = new Rectangle(player.getX(),player.getY(),
+                ResourceMgr.goodTankU.getWidth(),ResourceMgr.goodTankU.getHeight());
+        //判断是否相交
+        if(rect.intersects(rectTank)){
+            this.die();
+            player.die();
         }
 
     }

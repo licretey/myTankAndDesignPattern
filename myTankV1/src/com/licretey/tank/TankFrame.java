@@ -45,6 +45,9 @@ public class TankFrame extends Frame {
         tempTank.paint(g);//x，y由局部变量抽出到一个对象中，这个对象自己去绘制
         enemy.paint(g);
         for (int i=0;i<bullets.size();i++){
+            // 碰撞检查
+            bullets.get(i).collidesWithTank(enemy);
+            // 越界删除
             if(!bullets.get(i).isLive()){
                 bullets.remove(i);
             }else {

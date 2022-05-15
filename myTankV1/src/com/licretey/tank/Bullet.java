@@ -74,4 +74,24 @@ public class Bullet {
             this.live = false;
         }
     }
+
+
+    // 简易碰撞检查:
+    public void collidesWithTank(Tank tank){
+        Rectangle rect = new Rectangle(x,y,
+                ResourceMgr.bulletU.getWidth(),ResourceMgr.bulletU.getHeight());
+        Rectangle rectTank = new Rectangle(tank.getX(),tank.getY(),
+                ResourceMgr.goodTankU.getWidth(),ResourceMgr.goodTankU.getHeight());
+        //判断是否相交
+        if(rect.intersects(rectTank)){
+            this.die();
+            tank.die();
+        }
+
+    }
+
+    public void die(){
+        this.setLive(false);
+    }
+
 }

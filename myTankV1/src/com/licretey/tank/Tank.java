@@ -25,7 +25,16 @@ public class Tank {
     private boolean moving = false;
     // 使用枚举 区分敌我
     private Group group;
+    // 标志tank是否死亡
+    private boolean live = true;
 
+    public boolean isLive() {
+        return live;
+    }
+
+    public void setLive(boolean live) {
+        this.live = live;
+    }
 
     public Tank(int x, int y, Direction dir, Group group){
         this.x = x;
@@ -75,6 +84,7 @@ public class Tank {
      */
     // 自带绘制方法（根据自己的i位置信息绘制）
     public void paint(Graphics g) {
+        if(!this.isLive()) return; //若死亡不再绘制
 //        g.fillRect(x,y,50,50);
         //使用图片代替方块
         if(this.group==Group.GOOD){
@@ -206,5 +216,9 @@ public class Tank {
                 this.dir = Direction.D;
             }
         }
+    }
+
+    public void die() {
+        this.setLive(false);
     }
 }

@@ -23,12 +23,14 @@ public class ResourceMgr {
 			badTankR =  ImageUtil.rotateImage(badTankU, 90);
 			badTankD =  ImageUtil.rotateImage(badTankR, 90);
 			badTankL =  ImageUtil.rotateImage(badTankD, 90);
-			
+
+			// 子弹图片
 			bulletU = ImageIO.read(ResourceMgr.class.getClassLoader().getResourceAsStream("images/bulletU.png"));
 			bulletR = ImageUtil.rotateImage(bulletU, 90);
 			bulletD = ImageUtil.rotateImage(bulletR, 90);
 			bulletL = ImageUtil.rotateImage(bulletD, 90);
-			
+
+			// 爆炸图片
 			for(int i=0; i<16; i++) {
 				explodes[i] = ImageIO.read(ResourceMgr.class.getClassLoader().getResourceAsStream("images/e" + (i + 1) + ".gif"));
 			}

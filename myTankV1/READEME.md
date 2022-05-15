@@ -15,4 +15,5 @@
 + enmeyMove  添加敌人移动1: 拆分敌人tank与操作tank
 + enmeyMove2 添加敌人移动2: enmey移动并发射子弹
 + enmeyMove3 添加敌人移动3: 处理敌人更新方向与开火太频繁问题
-+ tankBorderCheck tank的边界检查
++ tankBorderCheck tank的边界检查 并添加多个敌人
++ addBomb2 添加爆炸特效

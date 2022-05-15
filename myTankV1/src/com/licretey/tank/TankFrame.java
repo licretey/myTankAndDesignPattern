@@ -12,6 +12,7 @@ public class TankFrame extends Frame {
     private List<Tank> enmeys;                   // 敌人容器
     public static final int GAME_WIDTH = 1000;   // 界面宽
     public static final int GAME_HEIGHT = 800;   // 界面高
+    Exploade exploade = new Exploade(150,150);
     // 单例模式创建frame
     public static final TankFrame SINGLE_FRAME = new TankFrame();
 
@@ -54,6 +55,7 @@ public class TankFrame extends Frame {
         // 让这个方块动起来，就需要传入动态的x ，y坐标，并且不停的调用paint绘制（如下）
         //        g.fillRect(x,y,50,50);
         planyer.paint(g);//x，y由局部变量抽出到一个对象中，这个对象自己去绘制
+        exploade.paint(g);
         for (int i = 0; i < enmeys.size(); i++) {
             // 删除死亡tank
             if(!enmeys.get(i).isLive()){

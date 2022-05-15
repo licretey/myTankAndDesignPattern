@@ -22,7 +22,7 @@ public class Player {
     // 使用枚举 区分敌我
     private Group group;
     // 标志tank是否死亡
-    private boolean live = true;
+    private boolean live = true; //存活中
 
     public boolean isLive() {
         return live;
@@ -89,7 +89,6 @@ public class Player {
     // 自带绘制方法（根据自己的i位置信息绘制）
     public void paint(Graphics g) {
         if(!this.isLive()) return; //若死亡不再绘制
-//        g.fillRect(x,y,50,50);
         //使用图片代替方块
         switch (dir){
             case L:
@@ -182,7 +181,7 @@ public class Player {
         int bulletY = y + ResourceMgr.goodTankU.getHeight()/2 - ResourceMgr.bulletU.getHeight()/2;
         // 使用tank的参数去创建一个子弹
         Bullet bullet = new Bullet(bulletX, bulletY, dir, group);
-        TankFrame.SINGLE_FRAME.addBullet(bullet);
+        TankFrame.SINGLE_FRAME.add(bullet);
     }
 
     private void setMainDir() {

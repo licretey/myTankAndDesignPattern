@@ -6,6 +6,7 @@ public class Exploade {
     private int x, y;                    // 位置
     private int width,height;            // 宽高
     private int step = 0;                // 步数
+    private boolean live = true;         // 结束标志
 
     public Exploade(int x, int y) {
         this.x = x;
@@ -16,11 +17,24 @@ public class Exploade {
 
     // 绘制爆炸的一组图片：记录爆炸的位置，爆炸之后的几帧在爆炸位置处依次绘制爆炸图片
     public void paint(Graphics g) {
+        if(!live) return;    // 已死亡不再绘制
         g.drawImage(ResourceMgr.explodes[step],x,y,null);
         step++;
         if(step>=ResourceMgr.explodes.length){
-            step = 0;
+            die();
         }
+    }
+
+    public boolean isLive() {
+        return live;
+    }
+
+    public void setLive(boolean over) {
+        this.live = over;
+    }
+
+    public void die(){
+        this.live = false;
     }
 
 }

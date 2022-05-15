@@ -7,12 +7,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TankFrame extends Frame {
-    Player planyer;                              // tank对象
+    Player player;                              // tank对象
     private List<Bullet> bullets;                // 子弹容器
     private List<Tank> enmeys;                   // 敌人容器
+    private List<Exploade> exploades;            // 爆炸容器
     public static final int GAME_WIDTH = 1000;   // 界面宽
     public static final int GAME_HEIGHT = 800;   // 界面高
-    Exploade exploade = new Exploade(150,150);
     // 单例模式创建frame
     public static final TankFrame SINGLE_FRAME = new TankFrame();
 
@@ -31,9 +31,10 @@ public class TankFrame extends Frame {
 
     // 初始化游戏对象
     private void initGamreObjects() {
-        // 抽象到tank类中
-        this.planyer = new Player(100,100, Direction.D, Group.GOOD);
         bullets = new ArrayList<>();
+        exploades = new ArrayList<>();
+        // 抽象到tank类中
+        this.player = new Player(100,100, Direction.D, Group.GOOD);
         enmeys = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
             Tank enmey = new Tank(300+50*i, 200, Direction.D, Group.BAD);
@@ -54,8 +55,10 @@ public class TankFrame extends Frame {
         // 绘制方块（x,y相对于窗口）
         // 让这个方块动起来，就需要传入动态的x ，y坐标，并且不停的调用paint绘制（如下）
         //        g.fillRect(x,y,50,50);
-        planyer.paint(g);//x，y由局部变量抽出到一个对象中，这个对象自己去绘制
-        exploade.paint(g);
+        if(player.isLive()){
+            player.paint(g);//x，y由局部变量抽出到一个对象中，这个对象自己去绘制
+        }
+        // 绘制敌人
         for (int i = 0; i < enmeys.size(); i++) {
             // 删除死亡tank
             if(!enmeys.get(i).isLive()){
@@ -64,11 +67,12 @@ public class TankFrame extends Frame {
                 enmeys.get(i).paint(g);
             }
         }
+        // 绘制子弹
         for (int i=0;i<bullets.size();i++){
             // 多个tank的碰撞检查
             for (int j = 0; j < enmeys.size(); j++) {
                 bullets.get(i).collidesWithTank(enmeys.get(j));
-                bullets.get(i).collidesWithTank(planyer); // 敌人的子弹检测是否碰到自己
+//                bullets.get(i).collidesWithTank(player); // 敌人的子弹检测是否碰到自己
             }
             // 越界删除
             if(!bullets.get(i).isLive()){
@@ -77,10 +81,22 @@ public class TankFrame extends Frame {
                 bullets.get(i).paint(g);
             }
         }
+        // 绘制爆炸
+        for (int i = 0; i < exploades.size(); i++) {
+            if(!exploades.get(i).isLive()){
+                exploades.remove(i);
+            }else {
+                exploades.get(i).paint(g);
+            }
+        }
     }
 
-    public void addBullet(Bullet bullet){
+    public void add(Bullet bullet){
         this.bullets.add(bullet);
+    }
+
+    public void add(Exploade exploade) {
+        this.exploades.add(exploade);
     }
 
     private class TankKeyListener extends KeyAdapter {
@@ -88,13 +104,17 @@ public class TankFrame extends Frame {
         @Override
         public void keyPressed(KeyEvent e) {
             // 如果创建了tank对象，对键盘的监听也交由这个对象自己来完成
-            planyer.keyPressed(e);
+            if(player.isLive()){
+                player.keyPressed(e);
+            }
         }
 
         @Override
         public void keyReleased(KeyEvent e) {
             // 如果创建了tank对象，对键盘的监听也交由这个对象自己来完成
-            planyer.keyReleased(e);
+            if(player.isLive()){
+                player.keyReleased(e);
+            }
         }
     }
 

@@ -18,7 +18,7 @@ public class Tank {
     // 位置信息
     private int x , y;
     // 速度
-    private static final int SPEED = 5;
+    private static final int SPEED = 3;
     // 方向
     private Direction dir = Direction.R;
     // 几个变量，用于记录键盘的按下状态
@@ -88,10 +88,14 @@ public class Tank {
                 break;
         }
 
-        // 更新敌人tank随机前进方向
-        this.dir = Direction.randomDir();
-        fire();
+        // 随机情况中符合特定条件触发更新方向（降低换向频率）
+        if(random.nextInt(100)>95) {
+            // 更新敌人tank随机前进方向
+            this.dir = Direction.randomDir();
+            fire();
+        }
     }
+    private Random random = new Random();
 
     /**
      * paint、keyPressed两种方法的核心思想就是，将操作物给对象自己去处理（键盘对象给tank，tank自己判断加减；画笔给tank，tank自己绘制位置）

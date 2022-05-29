@@ -17,3 +17,7 @@
 + enmeyMove3 添加敌人移动3: 处理敌人更新方向与开火太频繁问题
 + tankBorderCheck tank的边界检查 并添加多个敌人
 + addBomb2 添加爆炸特效
++ addVoice 添加背景音乐
++ reConsitution 重构
+  + 配置文件让项目更灵活
+  + 

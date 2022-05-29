@@ -4,6 +4,7 @@ import java.util.concurrent.TimeUnit;
 
 public class Main {
     public static void main(String[] args) {
+        //显示游戏背景图（包含各种物体：tangk，子弹，爆炸）
         TankFrame.SINGLE_FRAME.setVisible(true);
 
         //添加声音

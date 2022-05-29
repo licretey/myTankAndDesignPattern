@@ -35,8 +35,9 @@ public class TankFrame extends Frame {
         exploades = new ArrayList<>();
         // 抽象到tank类中
         this.player = new Player(100,100, Direction.D, Group.GOOD);
+        int enemyTankSize = Integer.parseInt(PropertyMgr.get("initEnemyTankCount"));
         enmeys = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < enemyTankSize; i++) {
             Tank enmey = new Tank(300+50*i, 200, Direction.D, Group.BAD);
             enmeys.add(enmey);
         }

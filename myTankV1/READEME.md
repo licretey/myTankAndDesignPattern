@@ -20,4 +20,4 @@
 + addVoice 添加背景音乐
 + reConsitution 重构
   + 配置文件让项目更灵活
-  + 
+  + 使用设计模式

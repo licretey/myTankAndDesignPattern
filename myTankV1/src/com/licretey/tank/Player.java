@@ -1,5 +1,9 @@
 package com.licretey.tank;
 
+import com.licretey.tank.strategy.DefaultFireStrategy;
+import com.licretey.tank.strategy.FireStrategy;
+import com.licretey.tank.strategy.FourDirFireStrategy;
+
 import java.awt.*;
 import java.awt.event.KeyEvent;
 
@@ -63,6 +67,13 @@ public class Player {
         this.y = y;
     }
 
+    public Direction getDir() {
+        return dir;
+    }
+
+    public void setDir(Direction dir) {
+        this.dir = dir;
+    }
 
     // 移动
     private void move() {
@@ -177,11 +188,18 @@ public class Player {
 
     // 开火
     private void fire() {
-        int bulletX = x + ResourceMgr.goodTankU.getWidth()/2 - ResourceMgr.bulletU.getWidth()/2;
-        int bulletY = y + ResourceMgr.goodTankU.getHeight()/2 - ResourceMgr.bulletU.getHeight()/2;
-        // 使用tank的参数去创建一个子弹
-        Bullet bullet = new Bullet(bulletX, bulletY, dir, group);
-        TankFrame.SINGLE_FRAME.add(bullet);
+//        int bulletX = x + ResourceMgr.goodTankU.getWidth()/2 - ResourceMgr.bulletU.getWidth()/2;
+//        int bulletY = y + ResourceMgr.goodTankU.getHeight()/2 - ResourceMgr.bulletU.getHeight()/2;
+//        // 使用tank的参数去创建一个子弹
+//        Bullet bullet = new Bullet(bulletX, bulletY, dir, group);
+//        TankFrame.SINGLE_FRAME.add(bullet);
+        FireStrategy fireStrategy = new DefaultFireStrategy();;
+        {
+            //获取新开火策略
+            fireStrategy = new FourDirFireStrategy();//fire的多态实现
+        }
+        fireStrategy.fire(this);
+
     }
 
     private void setMainDir() {

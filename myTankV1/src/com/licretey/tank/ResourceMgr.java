@@ -5,10 +5,14 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
+/**
+ * 资源管理器,把图片内容都加载进内存
+ * @author Administrator
+ */
 public class ResourceMgr {
-	static BufferedImage goodTankL,goodTankR,goodTankU,goodTankD;	// 好坦克各个方向图片资源
-	static BufferedImage badTankL,badTankR,badTankU,badTankD;		// 坏坦克各个方向图片资源
-	static BufferedImage bulletL,bulletR,bulletU,bulletD;			// 子弹各个方向图片资源
+	public static BufferedImage goodTankL,goodTankR,goodTankU,goodTankD;	// 好坦克各个方向图片资源
+	public static BufferedImage badTankL,badTankR,badTankU,badTankD;		// 坏坦克各个方向图片资源
+	public static BufferedImage bulletL,bulletR,bulletU,bulletD;			// 子弹各个方向图片资源
 	public static BufferedImage[] explodes = new BufferedImage[16];
 
 	// 资源不应该反复读取磁盘加载，利用static仅读取一次即可

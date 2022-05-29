@@ -1,0 +1,8 @@
+initTankCount=5
+# 初始化敌人数量
+initEnemyTankCount=15
+gameFrameWith=1000
+gameFrameHeight=800
+
+# 开火模式（设计模式）
+tankFireStrategy=DefaultFireStrategy

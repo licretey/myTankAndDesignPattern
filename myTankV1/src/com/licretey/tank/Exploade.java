@@ -2,7 +2,7 @@ package com.licretey.tank;
 
 import java.awt.*;
 
-public class Exploade {
+public class Exploade extends AbstactGameObject{
     private int x, y;                    // 位置
     private int width,height;            // 宽高
     private int step = 0;                // 步数

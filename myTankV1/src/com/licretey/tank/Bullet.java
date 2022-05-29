@@ -5,7 +5,7 @@ import java.awt.*;
 /*
  * 子弹类
  */
-public class Bullet {
+public class Bullet extends AbstactGameObject{
     private int x, y;                    // 位置
     private Direction dir;               // 方向
     private Group group;                 // 好坏

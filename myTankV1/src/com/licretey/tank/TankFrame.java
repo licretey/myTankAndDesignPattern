@@ -8,9 +8,10 @@ import java.util.List;
 
 public class TankFrame extends Frame {
     Player player;                              // tank对象
-    private List<Bullet> bullets;                // 子弹容器
-    private List<Tank> enmeys;                   // 敌人容器
-    private List<Exploade> exploades;            // 爆炸容器
+//    private List<Bullet> bullets;                // 子弹容器
+//    private List<Tank> enmeys;                   // 敌人容器
+//    private List<Exploade> exploades;            // 爆炸容器
+    List<AbstactGameObject> objects;             //抽象对象容器（代替上面三种容器）
     public static final int GAME_WIDTH = 1000;   // 界面宽
     public static final int GAME_HEIGHT = 800;   // 界面高
     // 单例模式创建frame
@@ -24,23 +25,22 @@ public class TankFrame extends Frame {
 
         // 添加键盘监听
         this.addKeyListener(new TankKeyListener());
-
-
-        initGamreObjects();
+        this.initGamreObjects();
     }
 
     // 初始化游戏对象
     private void initGamreObjects() {
-        bullets = new ArrayList<>();
-        exploades = new ArrayList<>();
+        objects = new ArrayList<>();
         // 抽象到tank类中
         this.player = new Player(100,100, Direction.D, Group.GOOD);
         int enemyTankSize = Integer.parseInt(PropertyMgr.get("initEnemyTankCount"));
-        enmeys = new ArrayList<>();
         for (int i = 0; i < enemyTankSize; i++) {
             Tank enmey = new Tank(300+50*i, 200, Direction.D, Group.BAD);
-            enmeys.add(enmey);
+            objects.add(enmey);
         }
+
+        //添加1堵墙
+        this.add(new Wall(300,200,400,50));
     }
 
     // awt自动调用
@@ -49,8 +49,8 @@ public class TankFrame extends Frame {
     public void paint(Graphics g) {
         Color color = g.getColor();
         g.setColor(Color.WHITE);
-        g.drawString("bullets:"+bullets.size(),10,50);
-        g.drawString("enmeys:"+enmeys.size(),10,60);
+//        g.drawString("bullets:"+bullets.size(),10,50);
+//        g.drawString("enmeys:"+enmeys.size(),10,60);
         g.setColor(color); //切回原来的画笔颜色
 
         // 绘制方块（x,y相对于窗口）
@@ -59,6 +59,11 @@ public class TankFrame extends Frame {
         if(player.isLive()){
             player.paint(g);//x，y由局部变量抽出到一个对象中，这个对象自己去绘制
         }
+        for (int i = 0; i < objects.size(); i++) {
+            objects.get(i).paint(g);
+        }
+
+        /*
         // 绘制敌人
         for (int i = 0; i < enmeys.size(); i++) {
             // 删除死亡tank
@@ -89,15 +94,11 @@ public class TankFrame extends Frame {
             }else {
                 exploades.get(i).paint(g);
             }
-        }
+        }*/
     }
 
-    public void add(Bullet bullet){
-        this.bullets.add(bullet);
-    }
-
-    public void add(Exploade exploade) {
-        this.exploades.add(exploade);
+    public void add(AbstactGameObject ago){
+        objects.add(ago);
     }
 
     private class TankKeyListener extends KeyAdapter {

@@ -13,7 +13,7 @@ import java.lang.reflect.Constructor;
  *      抽象出名词：属性、类
  *      抽象出动词：方法
  */
-public class Player {
+public class Player extends AbstactGameObject{
     // 位置信息
     private int x , y;
     // 速度

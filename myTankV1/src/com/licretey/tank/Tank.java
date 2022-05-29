@@ -1,12 +1,6 @@
 package com.licretey.tank;
 
-import javax.imageio.ImageIO;
-import javax.naming.directory.DirContext;
 import java.awt.*;
-import java.awt.event.KeyEvent;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.util.Objects;
 import java.util.Random;
 
 /**
@@ -101,7 +95,7 @@ public class Tank {
         boundsCheck(); //边界检查
 
         // 随机情况中符合特定条件触发更新方向（降低换向频率）
-        if(random.nextInt(100)>95) {
+        if(random.nextInt(100)>96) {
             // 更新敌人tank随机前进方向
             this.dir = Direction.randomDir();
             fire();

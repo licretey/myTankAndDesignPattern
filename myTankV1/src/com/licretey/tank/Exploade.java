@@ -13,6 +13,8 @@ public class Exploade {
         this.y = y;
         this.width = ResourceMgr.explodes[0].getWidth();
         this.height = ResourceMgr.explodes[0].getHeight();
+        //添加声音
+        new Thread(()->new Audio("audio/explode.wav").play()).start();
     }
 
     // 绘制爆炸的一组图片：记录爆炸的位置，爆炸之后的几帧在爆炸位置处依次绘制爆炸图片

@@ -6,6 +6,7 @@ import com.licretey.tank.strategy.FourDirFireStrategy;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.lang.reflect.Constructor;
 
 /**
  * 面向对象：
@@ -27,6 +28,8 @@ public class Player {
     private Group group;
     // 标志tank是否死亡
     private boolean live = true; //存活中
+    // 开火策略
+    FireStrategy fireStrategy = null;
 
     public boolean isLive() {
         return live;
@@ -47,8 +50,9 @@ public class Player {
     public Player(int x, int y, Direction dir, Group group){
         this.x = x;
         this.y = y;
-        this.dir = dir;     // 初始化移动方向，默认R
-        this.group = group; // 确定好坏
+        this.dir = dir;          // 初始化移动方向，默认R
+        this.group = group;      // 确定好坏
+        this.initFireStrategy(); // 开火策略
     }
 
     public int getX() {
@@ -186,20 +190,26 @@ public class Player {
         setMainDir();
     }
 
-    // 开火
-    private void fire() {
+    private void initFireStrategy(){
 //        int bulletX = x + ResourceMgr.goodTankU.getWidth()/2 - ResourceMgr.bulletU.getWidth()/2;
 //        int bulletY = y + ResourceMgr.goodTankU.getHeight()/2 - ResourceMgr.bulletU.getHeight()/2;
 //        // 使用tank的参数去创建一个子弹
 //        Bullet bullet = new Bullet(bulletX, bulletY, dir, group);
 //        TankFrame.SINGLE_FRAME.add(bullet);
-        FireStrategy fireStrategy = new DefaultFireStrategy();;
-        {
-            //获取新开火策略
-            fireStrategy = new FourDirFireStrategy();//fire的多态实现
+        ClassLoader loader = Player.class.getClassLoader();
+        String className = PropertyMgr.get("tankFireStrategy");//策略类名
+        try {
+            Class clazz = loader.loadClass("com.licretey.tank.strategy." + className);//参数为全路径名
+//            Class clazz = Class.forName("com.licretey.tank.strategy." + className);//方式2加载class
+            Constructor declaredConstructor = clazz.getDeclaredConstructor(); //拿到构造方法
+            fireStrategy = (FireStrategy) declaredConstructor.newInstance();//通过构造方法new一个对象
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+    }
+    // 开火
+    private void fire() {
         fireStrategy.fire(this);
-
     }
 
     private void setMainDir() {

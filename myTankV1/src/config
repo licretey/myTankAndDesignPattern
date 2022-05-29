@@ -5,4 +5,4 @@ gameFrameWith=1000
 gameFrameHeight=800
 
 # 开火模式（设计模式）
-tankFireStrategy=nuclear
+tankFireStrategy=DefaultFireStrategy

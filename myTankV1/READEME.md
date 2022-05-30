@@ -35,5 +35,11 @@
 + reConsitution4 重构4：list封装碰撞检测（bug:一颗子弹在爆炸后且未重绘前，会隐藏存在着去碰撞墙，因为碰撞处未删除对象）
 + reConsitution5 重构5：结合3，4（真正的责任链模式）
 + reConsitution6 添加一个新的碰撞检测
-+ modelAndView model、view的分离（MVC）
++ modelAndView model、view的分离（MVC、门面者facade模式、调停者Mediator模式）
++ serializableInterface 序列化
+> 序列化：将内存中的多个对象数据，一同写到磁盘或网络上
+> 
+> transient 修饰的变量不参与序列化（会根据类型赋上默认值，实际不存在）
+> 
+> 序列化对象中包含引用对象时，引用对象的类也需要实现Serializable
 

@@ -3,6 +3,7 @@ package com.licretey.tank;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.io.*;
 
 public class TankFrame extends Frame {
     public static final int GAME_WIDTH = 1000;   // 界面宽
@@ -71,10 +72,18 @@ public class TankFrame extends Frame {
         // KeyAdapter 以空方法的形式实现许多KeyListener接口的方法
         @Override
         public void keyPressed(KeyEvent e) {
-            // 如果创建了tank对象，对键盘的监听也交由这个对象自己来完成
-            Player player = gm.getPlayer();
-            if(player.isLive()){
-                player.keyPressed(e);
+            int keyCode = e.getKeyCode();
+            //N键时序列化存档
+            if(keyCode ==  KeyEvent.VK_N) {
+                save();
+            }else if(keyCode ==  KeyEvent.VK_L) {
+                load();
+            }else {
+                // 如果创建了tank对象，对键盘的监听也交由这个对象自己来完成
+                Player player = gm.getPlayer();
+                if(player.isLive()){
+                    player.keyPressed(e);
+                }
             }
         }
 
@@ -84,6 +93,49 @@ public class TankFrame extends Frame {
             Player player = gm.getPlayer();
             if(player.isLive()){
                 player.keyReleased(e);
+            }
+        }
+    }
+
+    private void save(){
+        ObjectOutputStream oos = null;
+        try {
+            File file = new File("D:/myTank.dat");
+            FileOutputStream fos = new FileOutputStream(file);
+            oos = new ObjectOutputStream(fos);
+            //将对象写到文件中去
+            oos.writeObject(gm);
+            oos.flush();//写在finally中
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if(oos!=null){
+                    oos.close();//写在finally中
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void load(){
+        ObjectInputStream ois = null;
+        try {
+            File file = new File("D:/myTank.dat");
+            FileInputStream fis = new FileInputStream(file);
+            ois = new ObjectInputStream(fis);
+            //将对象写到文件中去
+            this.gm = (GameModel)ois.readObject();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if(ois!=null) {
+                    ois.close();//写在finally中
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         }
     }

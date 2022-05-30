@@ -3,10 +3,11 @@ package com.licretey.tank;
 import com.licretey.tank.chainOfResponsibility.ColliderChain;
 
 import java.awt.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GameModel {
+public class GameModel implements Serializable {
     private Player player;                              // tank对象
     //    private List<Bullet> bullets;                // 子弹容器
     //    private List<Tank> enmeys;                   // 敌人容器
@@ -51,18 +52,20 @@ public class GameModel {
 //        g.drawString("enmeys:"+enmeys.size(),10,60);
         g.setColor(color); //切回原来的画笔颜色
 
-        // 绘制方块（x,y相对于窗口）
-        // 让这个方块动起来，就需要传入动态的x ，y坐标，并且不停的调用paint绘制（如下）
-        //        g.fillRect(x,y,50,50);
+
         if(player.isLive()){
             player.paint(g);//x，y由局部变量抽出到一个对象中，这个对象自己去绘制
         }
+
+        //将死亡对象移除
         for (int i = 0; i < objects.size(); i++) {
             //先判断死活
             if(!objects.get(i).isLive()){
                 objects.remove(i);
                 break;
             }
+        }
+        for (int i = 0; i < objects.size(); i++) {
             // 两个物体的碰撞检测
             AbstactGameObject ago1 = objects.get(i);
             for(int j=0; j< objects.size(); j++){

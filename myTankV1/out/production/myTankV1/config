@@ -7,4 +7,4 @@ gameFrameHeight=800
 # 开火模式（设计模式）
 tankFireStrategy=FourDirFireStrategy
 # 碰撞策略
-colliders=BulletTankCollider,BulletWallCollider,TankWallCollider
+colliders=BulletTankCollider,BulletWallCollider,TankWallCollider,TankTankCollider

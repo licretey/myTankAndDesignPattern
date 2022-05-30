@@ -43,12 +43,12 @@ public class TankFrame extends Frame {
         this.player = new Player(100,100, Direction.D, Group.GOOD);
         int enemyTankSize = Integer.parseInt(PropertyMgr.get("initEnemyTankCount"));
         for (int i = 0; i < enemyTankSize; i++) {
-            Tank enmey = new Tank(300+50*i, 200, Direction.D, Group.BAD);
+            Tank enmey = new Tank(300+80*i, 300, Direction.D, Group.BAD);
             objects.add(enmey);
         }
 
         //添加1堵墙
-        this.add(new Wall(300,200,400,50));
+        this.add(new Wall(300,150,400,50));
     }
 
     // awt自动调用

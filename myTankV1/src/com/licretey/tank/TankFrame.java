@@ -8,6 +8,8 @@ import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
 import java.util.List;
 
 public class TankFrame extends Frame {
@@ -48,8 +50,9 @@ public class TankFrame extends Frame {
     }
 
     // 碰撞器
-    Collider collider1 = new BulletTankCollider();
-    Collider collider2 = new BulletWallCollider();
+//    Collider collider1 = new BulletTankCollider();
+//    Collider collider2 = new BulletWallCollider();
+    List<Collider> colliders = Arrays.asList(new BulletTankCollider(),new BulletWallCollider());
     // awt自动调用
     // Graphics由系统提供
     @Override
@@ -76,8 +79,9 @@ public class TankFrame extends Frame {
             AbstactGameObject ago1 = objects.get(i);
             for(int j=0; j< objects.size(); j++){
                 AbstactGameObject ago2 = objects.get(j);
-                collider1.collide(ago1,ago2);
-                collider2.collide(ago1,ago2);
+                for(Collider collider : colliders){
+                    collider.collide(ago1,ago2);
+                }
             }
             objects.get(i).paint(g);
         }

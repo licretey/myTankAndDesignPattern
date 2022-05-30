@@ -1,8 +1,6 @@
 package com.licretey.tank;
 
-import com.licretey.tank.strategy.DefaultFireStrategy;
 import com.licretey.tank.strategy.FireStrategy;
-import com.licretey.tank.strategy.FourDirFireStrategy;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;

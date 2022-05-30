@@ -1,15 +1,12 @@
 package com.licretey.tank;
 
-import com.licretey.tank.chainOfResponsibility.BulletTankCollider;
-import com.licretey.tank.chainOfResponsibility.BulletWallCollider;
 import com.licretey.tank.chainOfResponsibility.Collider;
+import com.licretey.tank.chainOfResponsibility.ColliderChain;
 
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
 import java.util.List;
 
 public class TankFrame extends Frame {
@@ -25,7 +22,8 @@ public class TankFrame extends Frame {
     // 碰撞器
     //    Collider collider1 = new BulletTankCollider();
     //    Collider collider2 = new BulletWallCollider();
-    List<Collider> colliders ;
+    List<Collider> colliders ;//封装到责任链的list中
+    ColliderChain colliderChain = new ColliderChain();
 
     // 单例模式创建frame
     private TankFrame(){
@@ -36,7 +34,6 @@ public class TankFrame extends Frame {
         // 添加键盘监听
         this.addKeyListener(new TankKeyListener());
         this.initGamreObjects();
-        this.initColliders();
     }
 
     // 初始化游戏对象
@@ -54,22 +51,6 @@ public class TankFrame extends Frame {
         this.add(new Wall(300,200,400,50));
     }
 
-    //读取配置文件获取碰撞策略，天机到碰撞检测列表种
-    private void initColliders(){
-        colliders = new ArrayList<>();
-        String[] colliderNames = PropertyMgr.get("colliders").split(",");
-        for(String name : colliderNames){
-            try {
-                Class clazz= Class.forName("com.licretey.tank.chainOfResponsibility." + name);
-                Collider collider = (Collider)clazz.getConstructor().newInstance();
-                colliders.add(collider);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-        }
-//        = Arrays.asList(new BulletTankCollider(),new BulletWallCollider());
-    }
     // awt自动调用
     // Graphics由系统提供
     @Override
@@ -96,9 +77,7 @@ public class TankFrame extends Frame {
             AbstactGameObject ago1 = objects.get(i);
             for(int j=0; j< objects.size(); j++){
                 AbstactGameObject ago2 = objects.get(j);
-                for(Collider collider : colliders){
-                    collider.collide(ago1,ago2);
-                }
+                colliderChain.collide(ago1,ago2);
             }
             objects.get(i).paint(g);
         }

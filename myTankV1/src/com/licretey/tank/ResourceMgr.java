@@ -1,9 +1,8 @@
 package com.licretey.tank;
 
+import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-
-import javax.imageio.ImageIO;
 
 /**
  * 资源管理器,把图片内容都加载进内存

@@ -31,6 +31,7 @@
   > 2.一般物体确实存在使用抽象类，抽象的动作等用接口
   > 
   > （接口里的都是public final static的）
-+ reConsitution3 重构3：抽象物体对象后的碰撞检测（使用责任链模式）
-+ reConsitution4 重构4：list封装碰撞检测
++ reConsitution3 重构3：抽象物体对象后的碰撞检测（使用责任链模式：未引入责任链中的list）
++ reConsitution4 重构4：list封装碰撞检测（bug:一颗子弹在爆炸后且未重绘前，会隐藏存在着去碰撞墙，因为碰撞处未删除对象）
++ reConsitution5 重构5：结合3，4（真正的责任链模式）
 

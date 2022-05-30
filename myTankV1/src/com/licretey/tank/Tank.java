@@ -27,6 +27,8 @@ public class Tank extends AbstactGameObject{
     private int oldX, oldY;
     // tank图片宽度高度
     private int width, height;
+    // tank图片形状
+    private Rectangle rect;
 
 
     public boolean isLive() {
@@ -45,6 +47,10 @@ public class Tank extends AbstactGameObject{
         this.live = live;
     }
 
+    public Rectangle getRect() {
+        return rect;
+    }
+
     public Tank(int x, int y, Direction dir, Group group){
         this.x = x;
         this.y = y;
@@ -54,6 +60,7 @@ public class Tank extends AbstactGameObject{
         this.oldY = y;
         this.width = ResourceMgr.badTankU.getWidth();
         this.height = ResourceMgr.badTankU.getHeight();
+        this.rect = new Rectangle(x,y,width,height);
     }
 
     public int getX() {
@@ -125,6 +132,9 @@ public class Tank extends AbstactGameObject{
                 break;
         }
         this.move();//移动
+        //更新方框位置
+        rect.x = x;
+        rect.y = y;
     }
 
     // 边界检查
@@ -135,7 +145,7 @@ public class Tank extends AbstactGameObject{
     }
 
     // 回到上一个位置
-    private void back() {
+    public void back() {
         x = oldX;
         y = oldY;
     }

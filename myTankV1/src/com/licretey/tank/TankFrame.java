@@ -14,14 +14,18 @@ import java.util.List;
 
 public class TankFrame extends Frame {
     Player player;                              // tank对象
-//    private List<Bullet> bullets;                // 子弹容器
-//    private List<Tank> enmeys;                   // 敌人容器
-//    private List<Exploade> exploades;            // 爆炸容器
+    //    private List<Bullet> bullets;                // 子弹容器
+    //    private List<Tank> enmeys;                   // 敌人容器
+    //    private List<Exploade> exploades;            // 爆炸容器
     List<AbstactGameObject> objects;             //抽象对象容器（代替上面三种容器）
     public static final int GAME_WIDTH = 1000;   // 界面宽
     public static final int GAME_HEIGHT = 800;   // 界面高
     // 单例模式创建frame
     public static final TankFrame SINGLE_FRAME = new TankFrame();
+    // 碰撞器
+    //    Collider collider1 = new BulletTankCollider();
+    //    Collider collider2 = new BulletWallCollider();
+    List<Collider> colliders ;
 
     // 单例模式创建frame
     private TankFrame(){
@@ -32,6 +36,7 @@ public class TankFrame extends Frame {
         // 添加键盘监听
         this.addKeyListener(new TankKeyListener());
         this.initGamreObjects();
+        this.initColliders();
     }
 
     // 初始化游戏对象
@@ -49,10 +54,22 @@ public class TankFrame extends Frame {
         this.add(new Wall(300,200,400,50));
     }
 
-    // 碰撞器
-//    Collider collider1 = new BulletTankCollider();
-//    Collider collider2 = new BulletWallCollider();
-    List<Collider> colliders = Arrays.asList(new BulletTankCollider(),new BulletWallCollider());
+    //读取配置文件获取碰撞策略，天机到碰撞检测列表种
+    private void initColliders(){
+        colliders = new ArrayList<>();
+        String[] colliderNames = PropertyMgr.get("colliders").split(",");
+        for(String name : colliderNames){
+            try {
+                Class clazz= Class.forName("com.licretey.tank.chainOfResponsibility." + name);
+                Collider collider = (Collider)clazz.getConstructor().newInstance();
+                colliders.add(collider);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        }
+//        = Arrays.asList(new BulletTankCollider(),new BulletWallCollider());
+    }
     // awt自动调用
     // Graphics由系统提供
     @Override

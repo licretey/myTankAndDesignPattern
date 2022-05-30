@@ -1,5 +1,9 @@
 package com.licretey.tank;
 
+import com.licretey.tank.chainOfResponsibility.BulletTankCollider;
+import com.licretey.tank.chainOfResponsibility.BulletWallCollider;
+import com.licretey.tank.chainOfResponsibility.Collider;
+
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -43,6 +47,9 @@ public class TankFrame extends Frame {
         this.add(new Wall(300,200,400,50));
     }
 
+    // 碰撞器
+    Collider collider1 = new BulletTankCollider();
+    Collider collider2 = new BulletWallCollider();
     // awt自动调用
     // Graphics由系统提供
     @Override
@@ -60,6 +67,18 @@ public class TankFrame extends Frame {
             player.paint(g);//x，y由局部变量抽出到一个对象中，这个对象自己去绘制
         }
         for (int i = 0; i < objects.size(); i++) {
+            //先判断死活
+            if(!objects.get(i).isLive()){
+                objects.remove(i);
+                break;
+            }
+
+            AbstactGameObject ago1 = objects.get(i);
+            for(int j=0; j< objects.size(); j++){
+                AbstactGameObject ago2 = objects.get(j);
+                collider1.collide(ago1,ago2);
+                collider2.collide(ago1,ago2);
+            }
             objects.get(i).paint(g);
         }
 

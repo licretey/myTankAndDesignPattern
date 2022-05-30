@@ -10,6 +10,20 @@ public class Bullet extends AbstactGameObject{
     private Direction dir;               // 方向
     private Group group;                 // 好坏
     private static final int SPEED = 7;  // 速度
+    private boolean live = true;         // 子弹是否从列表中删除
+    private int w = ResourceMgr.bulletU.getWidth(); // 子弹宽
+    private int h = ResourceMgr.bulletU.getHeight(); // 子弹高
+    private Rectangle rect;              // 子弹方块大小
+
+    public Bullet(int x, int y, Direction dir, Group group) {
+        this.x = x;
+        this.y = y;
+        this.dir = dir;
+        this.group = group;
+
+        rect = new Rectangle(x,y,w,h);
+    }
+
 
     public boolean isLive() {
         return live;
@@ -17,15 +31,6 @@ public class Bullet extends AbstactGameObject{
 
     public void setLive(boolean live) {
         this.live = live;
-    }
-
-    private boolean live = true;         // 子弹是否从列表中删除
-
-    public Bullet(int x, int y, Direction dir, Group group) {
-        this.x = x;
-        this.y = y;
-        this.dir = dir;
-        this.group = group;
     }
 
     // 子弹自我绘制方法
@@ -47,6 +52,9 @@ public class Bullet extends AbstactGameObject{
                 break;
         } 
         move();
+
+        rect.x = x;    //更新子弹rectangle
+        rect.y = y;    //更新子弹rectangle
     }
 
     // 移动
@@ -65,7 +73,7 @@ public class Bullet extends AbstactGameObject{
                 y += SPEED;
                 break;
         }
-        boundsCheck();
+        boundsCheck(); //边界检查
     }
 
     // 边界检查
@@ -86,8 +94,6 @@ public class Bullet extends AbstactGameObject{
     public void collidesWithTank(Tank tank){
         if(!this.isLive() || !tank.isLive()) return; // 子弹未死且不与死亡的tank进行检查
         if(this.group == tank.getGroup()) return; // 相同阵营子弹对tank无效
-        Rectangle rect = new Rectangle(x,y,
-                ResourceMgr.bulletU.getWidth(),ResourceMgr.bulletU.getHeight());
         Rectangle rectTank = new Rectangle(tank.getX(),tank.getY(),
                 ResourceMgr.goodTankU.getWidth(),ResourceMgr.goodTankU.getHeight());
         //判断是否相交
@@ -97,6 +103,10 @@ public class Bullet extends AbstactGameObject{
             System.out.println(this.x+"-"+this.y);
 
         }
+    }
+
+    public Rectangle getRect() {
+        return rect;
     }
 
     public void collidesWithTank(Player player){

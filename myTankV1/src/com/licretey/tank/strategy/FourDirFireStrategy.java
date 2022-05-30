@@ -12,7 +12,7 @@ public class FourDirFireStrategy implements FireStrategy{
         for(Direction dir : dirs){
             // 使用tank的参数去创建一个子弹
             Bullet bullet = new Bullet(bulletX, bulletY, dir, player.getGroup());
-            TankFrame.SINGLE_FRAME.add(bullet);
+            TankFrame.SINGLE_FRAME.getGm().add(bullet);
         }
     }
 }

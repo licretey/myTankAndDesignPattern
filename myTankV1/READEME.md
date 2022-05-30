@@ -35,4 +35,5 @@
 + reConsitution4 重构4：list封装碰撞检测（bug:一颗子弹在爆炸后且未重绘前，会隐藏存在着去碰撞墙，因为碰撞处未删除对象）
 + reConsitution5 重构5：结合3，4（真正的责任链模式）
 + reConsitution6 添加一个新的碰撞检测
++ modelAndView model、view的分离（MVC）
 

@@ -94,12 +94,7 @@ public class Bullet extends AbstactGameObject{
     public void addBomb(){
         this.setLive(false);
         Exploade exploade = new Exploade(x, y);
-        TankFrame.SINGLE_FRAME.add(exploade);
-    }
-
-    // 简易碰撞检查:
-    public void collidesWithTank(Tank tank){
-
+        TankFrame.SINGLE_FRAME.getGm().add(exploade);
     }
 
     public Rectangle getRect() {

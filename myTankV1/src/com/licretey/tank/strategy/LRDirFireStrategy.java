@@ -10,8 +10,8 @@ public class LRDirFireStrategy implements FireStrategy{
 
         // 使用tank的参数去创建一个子弹
         Bullet bulletL = new Bullet(bulletX, bulletY, Direction.L, player.getGroup());
-        TankFrame.SINGLE_FRAME.add(bulletL);
+        TankFrame.SINGLE_FRAME.getGm().add(bulletL);
         Bullet bulletR = new Bullet(bulletX, bulletY, Direction.R, player.getGroup());
-        TankFrame.SINGLE_FRAME.add(bulletR);
+        TankFrame.SINGLE_FRAME.getGm().add(bulletR);
     }
 }

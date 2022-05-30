@@ -1,29 +1,16 @@
 package com.licretey.tank;
 
-import com.licretey.tank.chainOfResponsibility.Collider;
-import com.licretey.tank.chainOfResponsibility.ColliderChain;
-
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.util.ArrayList;
-import java.util.List;
 
 public class TankFrame extends Frame {
-    Player player;                              // tank对象
-    //    private List<Bullet> bullets;                // 子弹容器
-    //    private List<Tank> enmeys;                   // 敌人容器
-    //    private List<Exploade> exploades;            // 爆炸容器
-    List<AbstactGameObject> objects;             //抽象对象容器（代替上面三种容器）
     public static final int GAME_WIDTH = 1000;   // 界面宽
     public static final int GAME_HEIGHT = 800;   // 界面高
     // 单例模式创建frame
     public static final TankFrame SINGLE_FRAME = new TankFrame();
-    // 碰撞器
-    //    Collider collider1 = new BulletTankCollider();
-    //    Collider collider2 = new BulletWallCollider();
-    List<Collider> colliders ;//封装到责任链的list中
-    ColliderChain colliderChain = new ColliderChain();
+    // 抽出来的model集合对象
+    private GameModel gm = new GameModel();
 
     // 单例模式创建frame
     private TankFrame(){
@@ -33,54 +20,14 @@ public class TankFrame extends Frame {
 
         // 添加键盘监听
         this.addKeyListener(new TankKeyListener());
-        this.initGamreObjects();
     }
 
-    // 初始化游戏对象
-    private void initGamreObjects() {
-        objects = new ArrayList<>();
-        // 抽象到tank类中
-        this.player = new Player(100,100, Direction.D, Group.GOOD);
-        int enemyTankSize = Integer.parseInt(PropertyMgr.get("initEnemyTankCount"));
-        for (int i = 0; i < enemyTankSize; i++) {
-            Tank enmey = new Tank(300+80*i, 300, Direction.D, Group.BAD);
-            objects.add(enmey);
-        }
-
-        //添加1堵墙
-        this.add(new Wall(300,150,400,50));
-    }
 
     // awt自动调用
     // Graphics由系统提供
     @Override
     public void paint(Graphics g) {
-        Color color = g.getColor();
-        g.setColor(Color.WHITE);
-//        g.drawString("bullets:"+bullets.size(),10,50);
-//        g.drawString("enmeys:"+enmeys.size(),10,60);
-        g.setColor(color); //切回原来的画笔颜色
-
-        // 绘制方块（x,y相对于窗口）
-        // 让这个方块动起来，就需要传入动态的x ，y坐标，并且不停的调用paint绘制（如下）
-        //        g.fillRect(x,y,50,50);
-        if(player.isLive()){
-            player.paint(g);//x，y由局部变量抽出到一个对象中，这个对象自己去绘制
-        }
-        for (int i = 0; i < objects.size(); i++) {
-            //先判断死活
-            if(!objects.get(i).isLive()){
-                objects.remove(i);
-                break;
-            }
-
-            AbstactGameObject ago1 = objects.get(i);
-            for(int j=0; j< objects.size(); j++){
-                AbstactGameObject ago2 = objects.get(j);
-                colliderChain.collide(ago1,ago2);
-            }
-            objects.get(i).paint(g);
-        }
+        gm.paint(g);
 
         /*
         // 绘制敌人
@@ -116,8 +63,8 @@ public class TankFrame extends Frame {
         }*/
     }
 
-    public void add(AbstactGameObject ago){
-        objects.add(ago);
+    public GameModel getGm(){
+        return this.gm;
     }
 
     private class TankKeyListener extends KeyAdapter {
@@ -125,6 +72,7 @@ public class TankFrame extends Frame {
         @Override
         public void keyPressed(KeyEvent e) {
             // 如果创建了tank对象，对键盘的监听也交由这个对象自己来完成
+            Player player = gm.getPlayer();
             if(player.isLive()){
                 player.keyPressed(e);
             }
@@ -133,6 +81,7 @@ public class TankFrame extends Frame {
         @Override
         public void keyReleased(KeyEvent e) {
             // 如果创建了tank对象，对键盘的监听也交由这个对象自己来完成
+            Player player = gm.getPlayer();
             if(player.isLive()){
                 player.keyReleased(e);
             }

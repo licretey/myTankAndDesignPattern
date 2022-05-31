@@ -26,7 +26,15 @@ public class NettyServer {
         sb.channel(NioServerSocketChannel.class);
         // netty帮我们处理了accept接收请求的过程，我们只需要写处理函数（观察者模式）
         sb.childHandler(new MyChildInitializer());//添加初始化channel的类
-        sb.bind(9999).sync();
+        ChannelFuture future = sb.bind(9999).sync();
+
+        //阻塞
+        future.channel().closeFuture().sync();
+
+        //应写在finally中
+        bossLoopGroup.shutdownGracefully();
+        workerLoopGroup.shutdownGracefully();
+
     }
 
 

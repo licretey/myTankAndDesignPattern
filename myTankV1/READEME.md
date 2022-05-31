@@ -65,8 +65,10 @@
 
 #### 2.Netty
 
-+ [参考](github.com/bjmashibing/NettyStudy)
++ [代码参考](github.com/bjmashibing/NettyStudy)
 
++ netty Netty的基本开发流程
++ nettyChat 基于Netty的简易聊天室
 
 
 

@@ -53,6 +53,11 @@ public class ChatClient {
         channel.writeAndFlush(byteBufText);
     }
 
+    public void closeConnection() {
+        send("__bye__");//发送特殊标志，通知sever连接将主动断开
+        channel.close();
+    }
+
     static class MyHandler extends ChannelInboundHandlerAdapter{
 
         /*

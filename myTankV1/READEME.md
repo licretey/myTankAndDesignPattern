@@ -69,7 +69,7 @@
 
 + netty Netty的基本开发流程
 + nettyChat 实现客户界面并向Server发送消息后，能返回消息并解码读取
-+ nettyCha2 处理多个客户端信息的管理
++ nettyCha2 处理多个客户端信息的管理、关闭通知与异常处理
 
 
 

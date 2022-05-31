@@ -33,6 +33,14 @@ public class ClientFrame extends Frame {
                 tf.setText("");
             }
         });
+
+        this.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                client.closeConnection();
+                System.exit(0);
+            }
+        });
     }
 
 

@@ -9,6 +9,7 @@ import io.netty.channel.group.DefaultChannelGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.util.ReferenceCountUtil;
 import io.netty.util.concurrent.GlobalEventExecutor;
 
 public class ChatServer {
@@ -57,15 +58,26 @@ public class ChatServer {
 
         @Override
         public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-            //msg是由netty帮忙收集封装成ByteBuf类型的读取数据
-            //ByteBuf byteBuf = (ByteBuf)msg;
-            //System.out.println(byteBuf.toString());
-            ChatServer.clients.writeAndFlush(msg);//向所有client写
+            ByteBuf buf = (ByteBuf)msg;//Byte是直接操作内存的，不会自动被gc
+            byte[] bytes = new byte[buf.readableBytes()];//readableBytes返回要读取的字符长度
+            //从readerIndex处读取字符到数组bytes中（readerIndex读指针）
+            buf.getBytes(buf.readerIndex(),bytes);
+            String str = new String(bytes);
+            if("__bye__".equals(str)){
+                System.out.println("Client Ready to Quit.");
+                ChatServer.clients.remove(ctx.channel());
+                ctx.close();
+            }else {
+                ChatServer.clients.writeAndFlush(buf);//writeAndFlush会自动对bug进行释放
+            }
         }
 
         @Override
         public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
-            super.exceptionCaught(ctx, cause);
+            //异常处理
+            cause.printStackTrace();
+            ChatServer.clients.remove(ctx.channel());
+            ctx.close();
         }
     }
 

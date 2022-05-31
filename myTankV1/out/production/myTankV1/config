@@ -7,4 +7,8 @@ gameFrameHeight=800
 # 开火模式（设计模式）
 tankFireStrategy=FourDirFireStrategy
 # 碰撞策略
-colliders=BulletTankCollider,BulletWallCollider,TankWallCollider,TankTankCollider
+colliders=BulletTankCollider,BulletWallCollider,TankWallCollider,TankTankCollider\
+
+#服务器ip配置
+server=127.0.0.1
+serverPort=9999

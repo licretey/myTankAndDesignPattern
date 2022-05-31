@@ -8,9 +8,13 @@ import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
-import net.aio.Server;
+import io.netty.util.ReferenceCountUtil;
+import io.netty.util.ReferenceCounted;
 
-public class NettyClient {
+import javax.naming.Reference;
+import java.lang.ref.ReferenceQueue;
+
+public class ChatClient {
     private Channel channel = null;
 
     public void connect(){
@@ -56,13 +60,22 @@ public class NettyClient {
          */
         @Override
         public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-            ByteBuf buf = (ByteBuf)msg;
-            byte[] bytes = new byte[buf.readableBytes()];//readableBytes返回要读取的字符长度
-            //从readerIndex处读取字符到数组bytes中（readerIndex读指针）
-            buf.getBytes(buf.readerIndex(),bytes);
-            String str = new String(bytes);
-            System.out.println(str);
-//            System.out.println(msg.toString());
+            ByteBuf buf = null;
+            try {
+                buf = (ByteBuf)msg;//Byte是直接操作内存的，不会自动被gc
+                byte[] bytes = new byte[buf.readableBytes()];//readableBytes返回要读取的字符长度
+                //从readerIndex处读取字符到数组bytes中（readerIndex读指针）
+                buf.getBytes(buf.readerIndex(),bytes);
+                String str = new String(bytes);
+                ClientFrame.INSTANCE.updateText(str);
+            } finally {
+                if(buf!=null){
+                    //buf引用指向的内存处总共存在的引用数（但只需释放自己的一次）
+                    //buf.refCnt();
+                    ReferenceCountUtil.release(buf);
+                }
+            }
+            // System.out.println(msg.toString());
         }
 
         @Override

@@ -4,11 +4,16 @@ import com.licretey.tank.PropertyMgr;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.*;
+import io.netty.channel.group.ChannelGroup;
+import io.netty.channel.group.DefaultChannelGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.util.concurrent.GlobalEventExecutor;
 
-public class NettyServer {
+public class ChatServer {
+    public static ChannelGroup clients = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);//netty提供管理channel的类
+
     public static void main(String[] args) throws Exception{
         // 1. 定义两组线程
         // 一组管理者
@@ -45,11 +50,17 @@ public class NettyServer {
 
     static class ServerChildHandler extends ChannelInboundHandlerAdapter {
         @Override
+        public void channelActive(ChannelHandlerContext ctx) throws Exception {
+            //确认channel能用时存入组中
+            ChatServer.clients.add(ctx.channel());
+        }
+
+        @Override
         public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
             //msg是由netty帮忙收集封装成ByteBuf类型的读取数据
-            ByteBuf byteBuf = (ByteBuf)msg;
-            System.out.println(byteBuf.toString());
-            ctx.writeAndFlush(msg);//将信息回写数据
+            //ByteBuf byteBuf = (ByteBuf)msg;
+            //System.out.println(byteBuf.toString());
+            ChatServer.clients.writeAndFlush(msg);//向所有client写
         }
 
         @Override

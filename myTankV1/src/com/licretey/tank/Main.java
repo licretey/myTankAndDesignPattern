@@ -1,5 +1,7 @@
 package com.licretey.tank;
 
+import com.licretey.tank.net.TankClient;
+
 import java.util.concurrent.TimeUnit;
 
 public class Main {
@@ -10,14 +12,21 @@ public class Main {
         //添加声音
         new Thread(()->new Audio("audio/war1.wav").loop()).start();
 
-        while (true){
-            try {
-                TimeUnit.MICROSECONDS.sleep(20000);//sleep的另一种写法
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+        new Thread(()->{
+            while (true){
+                try {
+                    TimeUnit.MICROSECONDS.sleep(20000);//sleep的另一种写法
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                TankFrame.SINGLE_FRAME.repaint(); // repaint()会调用paint()
             }
-            TankFrame.SINGLE_FRAME.repaint(); // repaint()会调用paint()
-        }
+        });
+
+        //反复绘制和联网操作需要使用不同的线程（联网会阻塞）
+        TankClient.INSTANCE.connect();//联网
+
+
 
     }
 }

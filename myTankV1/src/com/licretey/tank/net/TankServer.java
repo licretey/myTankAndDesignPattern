@@ -65,8 +65,7 @@ public class TankServer {
 
         @Override
         public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-//            TankMsg tankMsg = (TankMsg) msg;
-//            ServerFrame.INSTANCE.updateClientMsg(tankMsg.toString());
+            ServerFrame.INSTANCE.updateClientMsg(msg.toString());
         }
 
         @Override

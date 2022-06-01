@@ -1,6 +1,8 @@
 package com.licretey.tank.net;
 
+import com.licretey.tank.GameModel;
 import com.licretey.tank.PropertyMgr;
+import com.licretey.tank.TankFrame;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -12,6 +14,12 @@ import io.netty.util.ReferenceCountUtil;
 
 public class TankClient {
     private Channel channel = null;
+
+    public static final TankClient INSTANCE = new TankClient();
+
+    private TankClient() {
+
+    }
 
     public void connect(){
         String serverAddr = (String)PropertyMgr.get("server");
@@ -29,7 +37,7 @@ public class TankClient {
                     channel = socketChannel;
                     socketChannel
                             .pipeline()
-//                            .addLast(new MsgEncoder())
+                            .addLast(new MsgEncoder())
                             .addLast(new MyHandler());
                 }
             });
@@ -61,6 +69,7 @@ public class TankClient {
         @Override
         public void channelActive(ChannelHandlerContext ctx) throws Exception {
 //            ctx.writeAndFlush(new TankMsg(5,8));
+            ctx.writeAndFlush(new TankJoinMsg(TankFrame.SINGLE_FRAME.getGm().getPlayer()));
         }
 
         /*

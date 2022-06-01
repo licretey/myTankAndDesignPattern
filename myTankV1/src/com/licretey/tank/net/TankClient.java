@@ -3,6 +3,7 @@ package com.licretey.tank.net;
 import com.licretey.tank.GameModel;
 import com.licretey.tank.PropertyMgr;
 import com.licretey.tank.TankFrame;
+import com.licretey.tank.net.*;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -38,6 +39,7 @@ public class TankClient {
                     socketChannel
                             .pipeline()
                             .addLast(new MsgEncoder())
+                            .addLast(new MsgDecoder())
                             .addLast(new MyHandler());
                 }
             });
@@ -55,44 +57,22 @@ public class TankClient {
         }
     }
 
-    public void send(String text){
-        ByteBuf byteBufText = Unpooled.copiedBuffer(text.getBytes());//辅助类将信息转为byteBuf类型
-        channel.writeAndFlush(byteBufText);
+    public void send(TankJoinMsg tankJoinMsg){
+//        ByteBuf byteBufText = Unpooled.copiedBuffer();//辅助类将信息转为byteBuf类型
+        channel.writeAndFlush(tankJoinMsg);//encoder将对象转为bytebuf
     }
 
     public void closeConnection() {
-        send("__bye__");//发送特殊标志，通知sever连接将主动断开
+        //发送特殊标志，通知sever连接将主动断开
+//        send("__bye__");
         channel.close();
     }
 
-    static class MyHandler extends ChannelInboundHandlerAdapter{
+    static class MyHandler extends SimpleChannelInboundHandler<TankJoinMsg>{
         @Override
         public void channelActive(ChannelHandlerContext ctx) throws Exception {
 //            ctx.writeAndFlush(new TankMsg(5,8));
             ctx.writeAndFlush(new TankJoinMsg(TankFrame.SINGLE_FRAME.getGm().getPlayer()));
-        }
-
-        /*
-         *通道中有数据过来时触发此读取操作
-         */
-        @Override
-        public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-            ByteBuf buf = null;
-            try {
-                buf = (ByteBuf)msg;//Byte是直接操作内存的，不会自动被gc
-                byte[] bytes = new byte[buf.readableBytes()];//readableBytes返回要读取的字符长度
-                //从readerIndex处读取字符到数组bytes中（readerIndex读指针）
-                buf.getBytes(buf.readerIndex(),bytes);
-                String str = new String(bytes);
-//                ClientFrame.INSTANCE.updateText(str);
-            } finally {
-                if(buf!=null){
-                    //buf引用指向的内存处总共存在的引用数（但只需释放自己的一次）
-                    //buf.refCnt();
-                    ReferenceCountUtil.release(buf);
-                }
-            }
-            // System.out.println(msg.toString());
         }
 
         @Override
@@ -101,6 +81,12 @@ public class TankClient {
             ctx.close();
         }
 
+        @Override
+        protected void channelRead0(ChannelHandlerContext ctx, TankJoinMsg tankJoinMsg) throws Exception {
+            //消息已转换为指定的类型
+            System.out.println(tankJoinMsg.toString());
+            tankJoinMsg.handle();
+        }
     }
 
     public static void main(String[] args) {

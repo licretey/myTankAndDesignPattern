@@ -6,6 +6,8 @@ import java.awt.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
+import java.util.UUID;
 
 public class GameModel implements Serializable {
     private Player player;                              // tank对象
@@ -24,12 +26,14 @@ public class GameModel implements Serializable {
     public GameModel(){
         this.initGamreObjects();
     }
-
+    Random random =  new Random();
     // 初始化游戏对象
     private void initGamreObjects() {
         objects = new ArrayList<>();
         // 抽象到tank类中
-        this.player = new Player(100,100, Direction.D, Group.GOOD);
+        Direction dir = Direction.values()[random.nextInt(Direction.values().length)];
+        Group group = Group.values()[random.nextInt(Group.values().length)];
+        this.player = new Player(50+random.nextInt(700),50+ random.nextInt(500), dir, group);
         int enemyTankSize = Integer.parseInt(PropertyMgr.get("initEnemyTankCount"));
         for (int i = 0; i < enemyTankSize; i++) {
             Tank enmey = new Tank(300+80*i, 300, Direction.D, Group.BAD);
@@ -78,5 +82,17 @@ public class GameModel implements Serializable {
 
     public Player getPlayer(){
         return player;
+    }
+
+    public Tank findTankByUUID(UUID id) {
+        for(AbstactGameObject o : objects){
+            if(o instanceof Tank){
+                 Tank tank = (Tank) o;
+                 if(id.equals(tank.getId())){
+                     return tank;
+                 }
+            }
+        }
+        return  null;
     }
 }

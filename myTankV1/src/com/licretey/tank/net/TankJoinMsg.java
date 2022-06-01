@@ -1,12 +1,8 @@
 package com.licretey.tank.net;
 
-import com.licretey.tank.Direction;
-import com.licretey.tank.Group;
-import com.licretey.tank.Player;
+import com.licretey.tank.*;
 
-import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.util.UUID;
 
 
@@ -69,4 +65,97 @@ public class TankJoinMsg {
        }
        return bytes;
    }
+
+    public void parse(byte[] bytes) {
+        DataInputStream dis = new DataInputStream(new ByteArrayInputStream(bytes));
+
+        try{
+            this.x = dis.readInt();
+            this.y = dis.readInt();
+            this.dir = Direction.values()[dis.readInt()];
+            this.moving = dis.readBoolean();
+            this.group = Group.values()[dis.readInt()];
+            this.id = new UUID(dis.readLong(),dis.readLong());
+        }catch (IOException e){
+            e.printStackTrace();
+        }finally {
+            try {
+                dis.close();
+            }catch (IOException e){
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "TankJoinMsg{" +
+                "x=" + x +
+                ", y=" + y +
+                ", dir=" + dir +
+                ", moving=" + moving +
+                ", group=" + group +
+                ", id=" + id +
+                '}';
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public void setY(int y) {
+        this.y = y;
+    }
+
+    public Direction getDir() {
+        return dir;
+    }
+
+    public void setDir(Direction dir) {
+        this.dir = dir;
+    }
+
+    public boolean isMoving() {
+        return moving;
+    }
+
+    public void setMoving(boolean moving) {
+        this.moving = moving;
+    }
+
+    public Group getGroup() {
+        return group;
+    }
+
+    public void setGroup(Group group) {
+        this.group = group;
+    }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
+    public void handle() {
+        if(this.id.equals(TankFrame.SINGLE_FRAME.getGm().getPlayer().getId())) return; //是自己
+        if(TankFrame.SINGLE_FRAME.getGm().findTankByUUID(this.id) != null) return;//已存在的其它对象
+
+        //添加tank
+        Tank tank = new Tank(this);
+        TankFrame.SINGLE_FRAME.getGm().add(tank);
+
+        //有新人加入，自己发送下通知对方自己的存在
+        TankClient.INSTANCE.send(new TankJoinMsg(TankFrame.SINGLE_FRAME.getGm().getPlayer()));
+    }
 }

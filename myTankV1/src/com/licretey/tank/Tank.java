@@ -1,7 +1,10 @@
 package com.licretey.tank;
 
+import com.licretey.tank.net.TankJoinMsg;
+
 import java.awt.*;
 import java.util.Random;
+import java.util.UUID;
 
 /**
  * 面向对象：
@@ -29,7 +32,28 @@ public class Tank extends AbstactGameObject{
     private int width, height;
     // tank图片形状
     private Rectangle rect;
+    // id
+    private UUID id;
 
+
+    public Tank(TankJoinMsg tankJoinMsg) {
+        this.x = tankJoinMsg.getX();
+        this.y = tankJoinMsg.getY();
+        this.moving = tankJoinMsg.isMoving();
+        this.dir = tankJoinMsg.getDir();
+        this.group = tankJoinMsg.getGroup();
+        this.id = tankJoinMsg.getId();
+
+        this.oldX = x;
+        this.oldY = y;
+        this.width = ResourceMgr.badTankU.getWidth();
+        this.height = ResourceMgr.badTankU.getHeight();
+        this.rect = new Rectangle(x,y,width,height);
+    }
+
+    public UUID getId() {
+        return id;
+    }
 
     public boolean isLive() {
         return live;
@@ -119,16 +143,16 @@ public class Tank extends AbstactGameObject{
         //使用图片代替方块
         switch (dir){
             case L:
-                g.drawImage(ResourceMgr.badTankL, x, y ,null);
+                g.drawImage(this.group.equals(Group.BAD)?ResourceMgr.badTankL:ResourceMgr.goodTankL, x, y ,null);
                 break;
             case R:
-                g.drawImage(ResourceMgr.badTankR, x, y ,null);
+                g.drawImage(this.group.equals(Group.BAD)?ResourceMgr.badTankR:ResourceMgr.goodTankR, x, y ,null);
                 break;
             case U:
-                g.drawImage(ResourceMgr.badTankU, x, y ,null);
+                g.drawImage(this.group.equals(Group.BAD)?ResourceMgr.badTankU:ResourceMgr.goodTankU, x, y ,null);
                 break;
             case D:
-                g.drawImage(ResourceMgr.badTankD, x, y ,null);
+                g.drawImage(this.group.equals(Group.BAD)?ResourceMgr.badTankD:ResourceMgr.goodTankD, x, y ,null);
                 break;
         }
         this.move();//移动

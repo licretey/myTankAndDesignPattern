@@ -10,7 +10,7 @@ public class Main {
         TankFrame.SINGLE_FRAME.setVisible(true);
 
         //添加声音
-        new Thread(()->new Audio("audio/war1.wav").loop()).start();
+//        new Thread(()->new Audio("audio/war1.wav").loop()).start();
 
         new Thread(()->{
             while (true){
@@ -25,7 +25,6 @@ public class Main {
 
         //反复绘制和联网操作需要使用不同的线程（联网会阻塞）
         TankClient.INSTANCE.connect();//联网
-
 
 
     }

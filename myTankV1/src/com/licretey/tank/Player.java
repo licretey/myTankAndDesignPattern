@@ -114,19 +114,23 @@ public class Player extends AbstactGameObject{
     // 自带绘制方法（根据自己的i位置信息绘制）
     public void paint(Graphics g) {
         if(!this.isLive()) return; //若死亡不再绘制
+        Color color = g.getColor();
+        g.setColor(Color.BLUE);
+        g.drawString(id.toString(),x,y-10);
+        g.setColor(color);
         //使用图片代替方块
         switch (dir){
             case L:
-                g.drawImage(ResourceMgr.goodTankL, x, y ,null);
+                g.drawImage(this.group.equals(Group.GOOD)?ResourceMgr.goodTankL:ResourceMgr.badTankL, x, y ,null);
                 break;
             case R:
-                g.drawImage(ResourceMgr.goodTankR, x, y ,null);
+                g.drawImage(this.group.equals(Group.GOOD)?ResourceMgr.goodTankL:ResourceMgr.badTankR, x, y ,null);
                 break;
             case U:
-                g.drawImage(ResourceMgr.goodTankU, x, y ,null);
+                g.drawImage(this.group.equals(Group.GOOD)?ResourceMgr.goodTankL:ResourceMgr.badTankU, x, y ,null);
                 break;
             case D:
-                g.drawImage(ResourceMgr.goodTankD, x, y ,null);
+                g.drawImage(this.group.equals(Group.GOOD)?ResourceMgr.goodTankL:ResourceMgr.badTankD, x, y ,null);
                 break;
         }
         this.move();//移动

@@ -5,6 +5,7 @@ import com.licretey.tank.strategy.FireStrategy;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.lang.reflect.Constructor;
+import java.util.UUID;
 
 /**
  * 面向对象：
@@ -28,6 +29,17 @@ public class Player extends AbstactGameObject{
     private boolean live = true; //存活中
     // 开火策略
     FireStrategy fireStrategy = null;
+    //联网时需要一个唯一id标识
+    private UUID id = UUID.randomUUID();
+
+
+    public UUID getId() {
+        return id;
+    }
+
+    public boolean isMoving() {
+        return moving;
+    }
 
     public boolean isLive() {
         return live;

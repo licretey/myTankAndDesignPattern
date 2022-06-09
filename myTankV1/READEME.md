@@ -78,6 +78,7 @@
 >![img.png](sources/reademeImgs/img.png)
 
 + commonMsgEnAndDecoder 封装消息体父类，抽象消息体的公共方法
++ tanStartMovingMsg 添加实现了共有方法的tank移动消息体
 
 
 

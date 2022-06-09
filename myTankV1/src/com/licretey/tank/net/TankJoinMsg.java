@@ -6,7 +6,7 @@ import java.io.*;
 import java.util.UUID;
 
 
-public class TankJoinMsg {
+public class TankJoinMsg extends Msg{
     private int x,y;
     private Direction dir;
     private boolean moving;
@@ -25,7 +25,8 @@ public class TankJoinMsg {
         this.id = player.getId();
     }
 
-   public byte[] boBytes(){
+    @Override
+    public byte[] toBytes(){
         ByteArrayOutputStream baos = null;
         DataOutputStream dos = null;
         byte[] bytes = null;
@@ -66,6 +67,7 @@ public class TankJoinMsg {
        return bytes;
    }
 
+    @Override
     public void parse(byte[] bytes) {
         DataInputStream dis = new DataInputStream(new ByteArrayInputStream(bytes));
 
@@ -86,6 +88,8 @@ public class TankJoinMsg {
             }
         }
     }
+
+
 
     @Override
     public String toString() {
@@ -147,6 +151,7 @@ public class TankJoinMsg {
         this.id = id;
     }
 
+    @Override
     public void handle() {
         if(this.id.equals(TankFrame.SINGLE_FRAME.getGm().getPlayer().getId())) return; //是自己
         if(TankFrame.SINGLE_FRAME.getGm().findTankByUUID(this.id) != null) return;//已存在的其它对象
@@ -157,5 +162,10 @@ public class TankJoinMsg {
 
         //有新人加入，自己发送下通知对方自己的存在
         TankClient.INSTANCE.send(new TankJoinMsg(TankFrame.SINGLE_FRAME.getGm().getPlayer()));
+    }
+
+    @Override
+    public MsgType getMsgType() {
+        return MsgType.TankJoin;
     }
 }

@@ -5,6 +5,7 @@ import com.licretey.tank.Group;
 import com.licretey.tank.Player;
 import com.licretey.tank.net.MsgDecoder;
 import com.licretey.tank.net.MsgEncoder;
+import com.licretey.tank.net.MsgType;
 import com.licretey.tank.net.TankJoinMsg;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -30,6 +31,7 @@ public class TankNetMsgTest {
 
         ByteBuf buf = ch.readOutbound();
 
+        MsgType msgType = MsgType.values()[buf.readInt()];
         int length = buf.readInt();
         int x = buf.readInt();
         int y = buf.readInt();
@@ -38,6 +40,7 @@ public class TankNetMsgTest {
         Group group = Group.values()[buf.readInt()];
         UUID id = new UUID(buf.readLong(),buf.readLong());
 
+        assertEquals(MsgType.TankJoin,msgType);
         assertEquals(33,length);
         assertEquals(50,x);
         assertEquals(100,y);
@@ -56,7 +59,7 @@ public class TankNetMsgTest {
 
         UUID id = UUID.randomUUID();
         ByteBuf buf = Unpooled.buffer();
-
+        buf.writeInt(MsgType.TankJoin.ordinal());
         buf.writeInt(33);
         buf.writeInt(5);
         buf.writeInt(8);

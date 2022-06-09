@@ -77,5 +77,7 @@
 >
 >![img.png](sources/reademeImgs/img.png)
 
++ commonMsgEnAndDecoder 封装消息体父类，抽象消息体的公共方法
+
 
 

@@ -72,10 +72,10 @@
 + nettyCha2 处理多个客户端信息的管理、关闭通知与异常处理
 + encoderDecoder 协议底层编码解码，Netty单元测试
 + tankAndNet 初步联网
-> jdk1.8坑爹bug：
-> 
-> 窗口中图片的绘制存在部分绘制的问题（联网绘制进程1的图片ok，但无法绘制传输过来的进程2的图片，将窗口最**小化后最大化**就能正常刷新出图片）
-23.12
+
+> 当前大致流程如下
+>
+>![img.png](sources/reademeImgs/img.png)
 
 
 

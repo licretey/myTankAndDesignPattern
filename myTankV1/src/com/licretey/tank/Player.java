@@ -124,13 +124,13 @@ public class Player extends AbstactGameObject{
                 g.drawImage(this.group.equals(Group.GOOD)?ResourceMgr.goodTankL:ResourceMgr.badTankL, x, y ,null);
                 break;
             case R:
-                g.drawImage(this.group.equals(Group.GOOD)?ResourceMgr.goodTankL:ResourceMgr.badTankR, x, y ,null);
+                g.drawImage(this.group.equals(Group.GOOD)?ResourceMgr.goodTankR:ResourceMgr.badTankR, x, y ,null);
                 break;
             case U:
-                g.drawImage(this.group.equals(Group.GOOD)?ResourceMgr.goodTankL:ResourceMgr.badTankU, x, y ,null);
+                g.drawImage(this.group.equals(Group.GOOD)?ResourceMgr.goodTankU:ResourceMgr.badTankU, x, y ,null);
                 break;
             case D:
-                g.drawImage(this.group.equals(Group.GOOD)?ResourceMgr.goodTankL:ResourceMgr.badTankD, x, y ,null);
+                g.drawImage(this.group.equals(Group.GOOD)?ResourceMgr.goodTankD:ResourceMgr.badTankD, x, y ,null);
                 break;
         }
         this.move();//移动

@@ -21,7 +21,7 @@ public class Main {
                 }
                 TankFrame.SINGLE_FRAME.repaint(); // repaint()会调用paint()
             }
-        });
+        }).start();
 
         //反复绘制和联网操作需要使用不同的线程（联网会阻塞）
         TankClient.INSTANCE.connect();//联网

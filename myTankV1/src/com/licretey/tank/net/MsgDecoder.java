@@ -16,7 +16,6 @@ public class MsgDecoder extends ByteToMessageDecoder {
         buf.readBytes(bytes);
 
         TankJoinMsg tjm = new TankJoinMsg();
-
         tjm.parse(bytes);
 
         list.add(tjm);

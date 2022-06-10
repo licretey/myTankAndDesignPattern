@@ -80,6 +80,7 @@
 + commonMsgEnAndDecoder 封装消息体父类，抽象消息体的公共方法
 + tankStartMovingMsg 添加实现了共有方法的tank移动消息体
 + tankStartMovingMsg2 实现hanlde方法，处理操作对象的网络同步
++ tankStopMsg 实现tank停止发送同步消息
 
 
 

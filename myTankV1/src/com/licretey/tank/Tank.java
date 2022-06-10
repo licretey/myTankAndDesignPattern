@@ -15,7 +15,7 @@ public class Tank extends AbstactGameObject{
     // 位置信息
     private int x , y;
     // 速度
-    private static final int SPEED = 4;
+    private static final int SPEED = 5;
     // 方向
     private Direction dir = Direction.R;
     // 几个变量，用于记录键盘的按下状态

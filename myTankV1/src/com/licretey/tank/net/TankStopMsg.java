@@ -1,7 +1,6 @@
 package com.licretey.tank.net;
 
 import com.licretey.tank.Direction;
-import com.licretey.tank.Group;
 import com.licretey.tank.Tank;
 import com.licretey.tank.TankFrame;
 
@@ -9,10 +8,9 @@ import java.io.*;
 import java.util.Objects;
 import java.util.UUID;
 
-public class TankStartMovingMsg extends Msg{
+public class TankStopMsg extends Msg{
     private UUID id;
     private int x,y;
-    private Direction dir;
 
     @Override
     public byte[] toBytes() {
@@ -24,13 +22,11 @@ public class TankStartMovingMsg extends Msg{
             baos = new ByteArrayOutputStream();
             dos = new DataOutputStream(baos);
 
+            //uuid是两个long组合而成，所以分开写处理
             dos.writeLong(id.getMostSignificantBits());//高位
             dos.writeLong(id.getLeastSignificantBits());//低位
             dos.writeInt(x);
             dos.writeInt(y);
-            //枚举看作一个数组时，ordinal获取位于数组上的下标
-            dos.writeInt(dir.ordinal());
-            //uuid是两个long组合而成，所以分开写处理
             dos.flush();
             bytes = baos.toByteArray();
         } catch (IOException e) {
@@ -63,7 +59,6 @@ public class TankStartMovingMsg extends Msg{
             this.id = new UUID(dis.readLong(),dis.readLong());
             this.x = dis.readInt();
             this.y = dis.readInt();
-            this.dir = Direction.values()[dis.readInt()];
         }catch (IOException e){
             e.printStackTrace();
         }finally {
@@ -83,27 +78,25 @@ public class TankStartMovingMsg extends Msg{
 
         Tank tank = TankFrame.SINGLE_FRAME.getGm().findTankByUUID(this.id);
         if(!Objects.isNull(tank)){
-            tank.setMoving(true);
+            tank.setMoving(false);
             tank.setX(this.x);
             tank.setY(this.y);
-            tank.setDir(this.dir);
         }
     }
 
     @Override
     public MsgType getMsgType() {
-        return MsgType.TankStartMoving;
+        return MsgType.TankStop;
     }
 
-    public TankStartMovingMsg(UUID id, int x, int y, Direction dir) {
+    public TankStopMsg(UUID id, int x, int y) {
         this.id = id;
         this.x = x;
         this.y = y;
-        this.dir = dir;
     }
 
     //反射的时候使用
-    public TankStartMovingMsg() {
+    public TankStopMsg() {
     }
 
     public UUID getId() {
@@ -130,21 +123,13 @@ public class TankStartMovingMsg extends Msg{
         this.y = y;
     }
 
-    public Direction getDir() {
-        return dir;
-    }
-
-    public void setDir(Direction dir) {
-        this.dir = dir;
-    }
 
     @Override
     public String toString() {
-        return "TankStartMovingMsg{" +
+        return "TankStopMsg{" +
                 "id=" + id +
                 ", x=" + x +
                 ", y=" + y +
-                ", dir=" + dir +
                 '}';
     }
 }

@@ -153,6 +153,8 @@ public class TankJoinMsg extends Msg{
 
     @Override
     public void handle() {
+        //client向server发送消息后，server会向所有client发送一遍
+        //TankClient中读取server发出的消息，交由handle处理
         if(this.id.equals(TankFrame.SINGLE_FRAME.getGm().getPlayer().getId())) return; //是自己
         if(TankFrame.SINGLE_FRAME.getGm().findTankByUUID(this.id) != null) return;//已存在的其它对象
 

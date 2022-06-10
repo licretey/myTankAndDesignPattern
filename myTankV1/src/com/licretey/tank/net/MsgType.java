@@ -1,5 +1,5 @@
 package com.licretey.tank.net;
 
 public enum MsgType {
-    TankJoin,TankStartMoving
+    TankJoin,TankStartMoving,TankStop
 }

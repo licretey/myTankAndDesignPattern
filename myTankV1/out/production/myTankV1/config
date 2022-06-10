@@ -1,6 +1,6 @@
 initTankCount=5
 # 初始化敌人数量
-initEnemyTankCount=1
+initEnemyTankCount=0
 gameFrameWith=1000
 gameFrameHeight=800
 

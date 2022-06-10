@@ -2,6 +2,7 @@ package com.licretey.tank;
 
 import com.licretey.tank.net.TankClient;
 import com.licretey.tank.net.TankStartMovingMsg;
+import com.licretey.tank.net.TankStopMsg;
 import com.licretey.tank.strategy.FireStrategy;
 
 import java.awt.*;
@@ -233,6 +234,8 @@ public class Player extends AbstactGameObject{
 
         if(!bL && !bR && !bU && !bD){
             this.moving = false;
+            //发送停止消息
+            TankClient.INSTANCE.send(new TankStopMsg(this.id,this.x,this.y));
         }else {
             this.moving = true;
             if(bL && !bR && !bU && !bD){

@@ -55,6 +55,14 @@ public class Tank extends AbstactGameObject{
         return id;
     }
 
+    public void setMoving(boolean moving) {
+        this.moving = moving;
+    }
+
+    public void setDir(Direction dir) {
+        this.dir = dir;
+    }
+
     public boolean isLive() {
         return live;
     }
@@ -125,12 +133,13 @@ public class Tank extends AbstactGameObject{
         }
         boundsCheck(); //边界检查
 
+        /*
         // 随机情况中符合特定条件触发更新方向（降低换向频率）
         if(random.nextInt(100)>96) {
             // 更新敌人tank随机前进方向
             this.dir = Direction.randomDir();
             fire();
-        }
+        }*/
     }
     private Random random = new Random();
 

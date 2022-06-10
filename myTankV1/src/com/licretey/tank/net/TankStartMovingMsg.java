@@ -2,8 +2,11 @@ package com.licretey.tank.net;
 
 import com.licretey.tank.Direction;
 import com.licretey.tank.Group;
+import com.licretey.tank.Tank;
+import com.licretey.tank.TankFrame;
 
 import java.io.*;
+import java.util.Objects;
 import java.util.UUID;
 
 public class TankStartMovingMsg extends Msg{
@@ -74,7 +77,15 @@ public class TankStartMovingMsg extends Msg{
 
     @Override
     public void handle() {
+        if(this.id.equals(TankFrame.SINGLE_FRAME.getGm().getPlayer().getId())) return; //是自己不处理
 
+        Tank tank = TankFrame.SINGLE_FRAME.getGm().findTankByUUID(this.id);
+        if(!Objects.isNull(tank)){
+            tank.setMoving(true);
+            tank.setX(this.x);
+            tank.setY(this.y);
+            tank.setDir(this.dir);
+        }
     }
 
     @Override
@@ -123,5 +134,15 @@ public class TankStartMovingMsg extends Msg{
 
     public void setDir(Direction dir) {
         this.dir = dir;
+    }
+
+    @Override
+    public String toString() {
+        return "TankStartMovingMsg{" +
+                "id=" + id +
+                ", x=" + x +
+                ", y=" + y +
+                ", dir=" + dir +
+                '}';
     }
 }

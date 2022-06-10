@@ -57,9 +57,9 @@ public class TankClient {
         }
     }
 
-    public void send(TankJoinMsg tankJoinMsg){
+    public void send(Msg msg){
 //        ByteBuf byteBufText = Unpooled.copiedBuffer();//辅助类将信息转为byteBuf类型
-        channel.writeAndFlush(tankJoinMsg);//encoder将对象转为bytebuf
+        channel.writeAndFlush(msg);//encoder将对象转为bytebuf
     }
 
     public void closeConnection() {
@@ -68,7 +68,7 @@ public class TankClient {
         channel.close();
     }
 
-    static class MyHandler extends SimpleChannelInboundHandler<TankJoinMsg>{
+    static class MyHandler extends SimpleChannelInboundHandler<Msg>{
         @Override
         public void channelActive(ChannelHandlerContext ctx) throws Exception {
 //            ctx.writeAndFlush(new TankMsg(5,8));
@@ -82,10 +82,10 @@ public class TankClient {
         }
 
         @Override
-        protected void channelRead0(ChannelHandlerContext ctx, TankJoinMsg tankJoinMsg) throws Exception {
+        protected void channelRead0(ChannelHandlerContext ctx, Msg msg) throws Exception {
             //消息已转换为指定的类型
-            System.out.println(tankJoinMsg.toString());
-            tankJoinMsg.handle();
+            System.out.println(msg.toString());
+            msg.handle();
         }
     }
 

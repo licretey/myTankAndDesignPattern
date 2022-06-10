@@ -1,7 +1,7 @@
 package com.licretey.tank;
 
 import com.licretey.tank.net.TankClient;
-import com.licretey.tank.net.TankStartMovingMsg;
+import com.licretey.tank.net.TankMoveOrDirChangeMsg;
 import com.licretey.tank.net.TankStopMsg;
 import com.licretey.tank.strategy.FireStrategy;
 
@@ -231,6 +231,7 @@ public class Player extends AbstactGameObject{
 
     private void setMainDir() {
         boolean oldMoving = moving;
+        Direction oldDir = this.getDir();
 
         if(!bL && !bR && !bU && !bD){
             this.moving = false;
@@ -252,7 +253,9 @@ public class Player extends AbstactGameObject{
             }
 
             //发送联网消息
-            if(!oldMoving) TankClient.INSTANCE.send(new TankStartMovingMsg(this.id,this.x,this.y,this.dir));
+            if(!oldMoving) TankClient.INSTANCE.send(new TankMoveOrDirChangeMsg(this.id,this.x,this.y,this.dir));
+            //改变方向时发送消息
+            if(!oldDir.equals(this.dir)) TankClient.INSTANCE.send(new TankMoveOrDirChangeMsg(this.id,this.x,this.y,this.dir));
         }
     }
 

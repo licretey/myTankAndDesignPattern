@@ -1,8 +1,6 @@
 package tankNetTest;
 
 import com.licretey.tank.Direction;
-import com.licretey.tank.Group;
-import com.licretey.tank.Player;
 import com.licretey.tank.net.*;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -13,7 +11,7 @@ import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class TankStartMovingMsgTest {
+public class TankMoveOrDirChangeMsgTest {
 
     @Test
     void encode(){
@@ -21,7 +19,7 @@ public class TankStartMovingMsgTest {
         EmbeddedChannel ch = new EmbeddedChannel();
         ch.pipeline().addLast(new MsgEncoder());
 
-        TankStartMovingMsg tjm = new TankStartMovingMsg(UUID.randomUUID(),50,100,Direction.D);
+        TankMoveOrDirChangeMsg tjm = new TankMoveOrDirChangeMsg(UUID.randomUUID(),50,100,Direction.D);
 
         ch.writeOutbound(tjm);
 
@@ -36,7 +34,7 @@ public class TankStartMovingMsgTest {
         int y = buf.readInt();
         Direction dir = Direction.values()[buf.readInt()];
 
-        assertEquals(MsgType.TankStartMoving,msgType);
+        assertEquals(MsgType.TankMoveOrDirChange,msgType);
         assertEquals(28,length);
         assertEquals(50,x);
         assertEquals(100,y);
@@ -52,7 +50,7 @@ public class TankStartMovingMsgTest {
 
         UUID id = UUID.randomUUID();
         ByteBuf buf = Unpooled.buffer();
-        buf.writeInt(MsgType.TankStartMoving.ordinal());
+        buf.writeInt(MsgType.TankMoveOrDirChange.ordinal());
         buf.writeInt(28);
 
         buf.writeLong(id.getMostSignificantBits());
@@ -63,7 +61,7 @@ public class TankStartMovingMsgTest {
 
         ch.writeInbound(buf);
 
-        TankStartMovingMsg tjm = ch.readInbound();
+        TankMoveOrDirChangeMsg tjm = ch.readInbound();
 
         assertEquals(id ,tjm.getId());
         assertEquals(5,tjm.getX());

@@ -1,7 +1,6 @@
 package com.licretey.tank.net;
 
 import com.licretey.tank.Direction;
-import com.licretey.tank.Group;
 import com.licretey.tank.Tank;
 import com.licretey.tank.TankFrame;
 
@@ -9,7 +8,7 @@ import java.io.*;
 import java.util.Objects;
 import java.util.UUID;
 
-public class TankStartMovingMsg extends Msg{
+public class TankMoveOrDirChangeMsg extends Msg{
     private UUID id;
     private int x,y;
     private Direction dir;
@@ -92,10 +91,10 @@ public class TankStartMovingMsg extends Msg{
 
     @Override
     public MsgType getMsgType() {
-        return MsgType.TankStartMoving;
+        return MsgType.TankMoveOrDirChange;
     }
 
-    public TankStartMovingMsg(UUID id, int x, int y, Direction dir) {
+    public TankMoveOrDirChangeMsg(UUID id, int x, int y, Direction dir) {
         this.id = id;
         this.x = x;
         this.y = y;
@@ -103,7 +102,7 @@ public class TankStartMovingMsg extends Msg{
     }
 
     //反射的时候使用
-    public TankStartMovingMsg() {
+    public TankMoveOrDirChangeMsg() {
     }
 
     public UUID getId() {
@@ -140,7 +139,7 @@ public class TankStartMovingMsg extends Msg{
 
     @Override
     public String toString() {
-        return "TankStartMovingMsg{" +
+        return "TankMoveOrDirChangeMsg{" +
                 "id=" + id +
                 ", x=" + x +
                 ", y=" + y +

@@ -4,6 +4,8 @@ import com.licretey.tank.AbstactGameObject;
 import com.licretey.tank.Bullet;
 import com.licretey.tank.ResourceMgr;
 import com.licretey.tank.Tank;
+import com.licretey.tank.net.TankClient;
+import com.licretey.tank.net.msg.TankDieMsg;
 
 import java.awt.*;
 
@@ -22,6 +24,9 @@ public class BulletTankCollider implements Collider{
             if(bullet.getRect().intersects(rectTank)){
                 tank.die();
                 bullet.addBomb();
+
+                //通知客户端tank与bullet死亡
+                TankClient.INSTANCE.send(new TankDieMsg(tank.getId(),bullet.getId()));
                 return false;
             }
         }

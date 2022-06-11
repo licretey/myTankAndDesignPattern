@@ -83,6 +83,7 @@
 + tankStopMsg 实现tank停止发送同步消息
 + TankMoveOrDirChange 移动和更换方向时都发送消息
 + BulletNewMsg 同步发射子弹的消息
++ tankDieMsg 同步发射爆炸死亡的消息
 
 
 

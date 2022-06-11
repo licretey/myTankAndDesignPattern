@@ -85,5 +85,8 @@
 + BulletNewMsg 同步发射子弹的消息
 + tankDieMsg 同步发射爆炸死亡的消息
 
+## 三 其它
++ slf4j slf4j日志框架
+
 
 

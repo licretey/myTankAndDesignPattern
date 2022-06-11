@@ -1,14 +1,16 @@
-package com.licretey.tank.net;
+package com.licretey.tank.net.msg;
 
 import com.licretey.tank.Direction;
 import com.licretey.tank.Tank;
 import com.licretey.tank.TankFrame;
+import com.licretey.tank.net.Msg;
+import com.licretey.tank.net.MsgType;
 
 import java.io.*;
 import java.util.Objects;
 import java.util.UUID;
 
-public class TankMoveOrDirChangeMsg extends Msg{
+public class TankMoveOrDirChangeMsg extends Msg {
     private UUID id;
     private int x,y;
     private Direction dir;

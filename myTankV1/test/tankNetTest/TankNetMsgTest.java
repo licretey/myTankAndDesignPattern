@@ -6,7 +6,7 @@ import com.licretey.tank.Player;
 import com.licretey.tank.net.MsgDecoder;
 import com.licretey.tank.net.MsgEncoder;
 import com.licretey.tank.net.MsgType;
-import com.licretey.tank.net.TankJoinMsg;
+import com.licretey.tank.net.msg.TankJoinMsg;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.embedded.EmbeddedChannel;

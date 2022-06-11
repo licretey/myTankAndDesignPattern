@@ -1,6 +1,8 @@
 package com.licretey.tank.strategy;
 
 import com.licretey.tank.*;
+import com.licretey.tank.net.TankClient;
+import com.licretey.tank.net.msg.BulletNewMsg;
 
 public class FourDirFireStrategy implements FireStrategy{
     @Override
@@ -11,8 +13,11 @@ public class FourDirFireStrategy implements FireStrategy{
         Direction[] dirs = Direction.values();
         for(Direction dir : dirs){
             // 使用tank的参数去创建一个子弹
-            Bullet bullet = new Bullet(bulletX, bulletY, dir, player.getGroup());
+            Bullet bullet = new Bullet(player.getId(), bulletX, bulletY, dir, player.getGroup());
             TankFrame.SINGLE_FRAME.getGm().add(bullet);
+
+            //发送消息
+            TankClient.INSTANCE.send(new BulletNewMsg(bullet));
         }
     }
 }

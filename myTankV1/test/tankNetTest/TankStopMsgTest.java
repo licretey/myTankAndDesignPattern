@@ -1,7 +1,7 @@
 package tankNetTest;
 
-import com.licretey.tank.Direction;
 import com.licretey.tank.net.*;
+import com.licretey.tank.net.msg.TankStopMsg;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.embedded.EmbeddedChannel;

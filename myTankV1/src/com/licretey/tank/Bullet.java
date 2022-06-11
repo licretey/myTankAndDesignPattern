@@ -1,11 +1,17 @@
 package com.licretey.tank;
 
+import com.licretey.tank.net.TankClient;
+import com.licretey.tank.net.msg.BulletNewMsg;
+
 import java.awt.*;
+import java.util.UUID;
 
 /*
  * 子弹类
  */
 public class Bullet extends AbstactGameObject{
+    private UUID id = UUID.randomUUID(); // 子弹id
+    private UUID playerId;               // 开火者
     private int x, y;                    // 位置
     private Direction dir;               // 方向
     private Group group;                 // 好坏
@@ -15,11 +21,12 @@ public class Bullet extends AbstactGameObject{
     private int h = ResourceMgr.bulletU.getHeight(); // 子弹高
     private Rectangle rect;              // 子弹方块大小
 
-    public Bullet(int x, int y, Direction dir, Group group) {
+    public Bullet(UUID playerId, int x, int y, Direction dir, Group group) {
         this.x = x;
         this.y = y;
         this.dir = dir;
         this.group = group;
+        this.playerId = playerId;
 
         rect = new Rectangle(x,y,w,h);
     }
@@ -38,6 +45,42 @@ public class Bullet extends AbstactGameObject{
 
     public void setLive(boolean live) {
         this.live = live;
+    }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public void setY(int y) {
+        this.y = y;
+    }
+
+    public Direction getDir() {
+        return dir;
+    }
+
+    public void setDir(Direction dir) {
+        this.dir = dir;
+    }
+
+    public UUID getPlayerId() {
+        return this.playerId;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
     }
 
     // 子弹自我绘制方法

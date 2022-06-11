@@ -1,8 +1,9 @@
 package com.licretey.tank;
 
 import com.licretey.tank.net.TankClient;
-import com.licretey.tank.net.TankMoveOrDirChangeMsg;
-import com.licretey.tank.net.TankStopMsg;
+import com.licretey.tank.net.msg.BulletNewMsg;
+import com.licretey.tank.net.msg.TankMoveOrDirChangeMsg;
+import com.licretey.tank.net.msg.TankStopMsg;
 import com.licretey.tank.strategy.FireStrategy;
 
 import java.awt.*;

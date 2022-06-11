@@ -1,16 +1,37 @@
-package com.licretey.tank.net;
+package com.licretey.tank.net.msg;
 
+import com.licretey.tank.Bullet;
 import com.licretey.tank.Direction;
-import com.licretey.tank.Tank;
+import com.licretey.tank.Group;
 import com.licretey.tank.TankFrame;
+import com.licretey.tank.net.Msg;
+import com.licretey.tank.net.MsgType;
 
+import java.awt.*;
 import java.io.*;
-import java.util.Objects;
 import java.util.UUID;
 
-public class TankStopMsg extends Msg{
+public class BulletNewMsg extends Msg {
+    private UUID playerId;//开火者
+    //子弹本身id
     private UUID id;
     private int x,y;
+    private Direction dir;
+    private Group group;
+
+    public BulletNewMsg() {
+
+    }
+
+    public BulletNewMsg(Bullet bullet) {
+        this.playerId = bullet.getPlayerId();
+        this.id = bullet.getId();
+        this.x = bullet.getX();
+        this.y = bullet.getY();
+        this.dir = bullet.getDir();
+        this.group = bullet.getGroup();
+    }
+
 
     @Override
     public byte[] toBytes() {
@@ -22,11 +43,18 @@ public class TankStopMsg extends Msg{
             baos = new ByteArrayOutputStream();
             dos = new DataOutputStream(baos);
 
-            //uuid是两个long组合而成，所以分开写处理
+            //playerID
+            dos.writeLong(playerId.getMostSignificantBits());//高位
+            dos.writeLong(playerId.getLeastSignificantBits());//低位
+            //bullet id
             dos.writeLong(id.getMostSignificantBits());//高位
             dos.writeLong(id.getLeastSignificantBits());//低位
+
             dos.writeInt(x);
             dos.writeInt(y);
+            dos.writeInt(dir.ordinal());
+            dos.writeInt(group.ordinal());
+
             dos.flush();
             bytes = baos.toByteArray();
         } catch (IOException e) {
@@ -56,9 +84,12 @@ public class TankStopMsg extends Msg{
         DataInputStream dis = new DataInputStream(new ByteArrayInputStream(bytes));
 
         try{
+            this.playerId = new UUID(dis.readLong(),dis.readLong());
             this.id = new UUID(dis.readLong(),dis.readLong());
             this.x = dis.readInt();
             this.y = dis.readInt();
+            this.dir = Direction.values()[dis.readInt()];
+            this.group = Group.values()[dis.readInt()];
         }catch (IOException e){
             e.printStackTrace();
         }finally {
@@ -72,64 +103,29 @@ public class TankStopMsg extends Msg{
 
     @Override
     public void handle() {
-        //client向server发送消息后，server会向所有client发送一遍
-        //TankClient中读取server发出的消息，交由handle处理
-        if(this.id.equals(TankFrame.SINGLE_FRAME.getGm().getPlayer().getId())) return; //是自己不处理
+        //自己发的不处理
+        if(this.playerId.equals(TankFrame.SINGLE_FRAME.getGm().getPlayer().getId())) return;
 
-        Tank tank = TankFrame.SINGLE_FRAME.getGm().findTankByUUID(this.id);
-        if(!Objects.isNull(tank)){
-            tank.setMoving(false);
-            tank.setX(this.x);
-            tank.setY(this.y);
-        }
+        //添加并绘制子弹
+        Bullet bullet = new Bullet(this.playerId,x,y,dir,group);
+        bullet.setId(this.id);
+        TankFrame.SINGLE_FRAME.getGm().add(bullet);
     }
 
     @Override
     public MsgType getMsgType() {
-        return MsgType.TankStop;
+        return MsgType.BulletNew;
     }
-
-    public TankStopMsg(UUID id, int x, int y) {
-        this.id = id;
-        this.x = x;
-        this.y = y;
-    }
-
-    //反射的时候使用
-    public TankStopMsg() {
-    }
-
-    public UUID getId() {
-        return id;
-    }
-
-    public void setId(UUID id) {
-        this.id = id;
-    }
-
-    public int getX() {
-        return x;
-    }
-
-    public void setX(int x) {
-        this.x = x;
-    }
-
-    public int getY() {
-        return y;
-    }
-
-    public void setY(int y) {
-        this.y = y;
-    }
-
 
     @Override
     public String toString() {
-        return "TankStopMsg{" +
-                "id=" + id +
+        return "BulletNewMsg{" +
+                "playerId=" + playerId +
+                ", id=" + id +
                 ", x=" + x +
                 ", y=" + y +
+                ", dir=" + dir +
+                ", group=" + group +
                 '}';
     }
 }

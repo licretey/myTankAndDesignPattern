@@ -1,17 +1,13 @@
 package com.licretey.tank.net;
 
-import com.licretey.tank.GameModel;
 import com.licretey.tank.PropertyMgr;
 import com.licretey.tank.TankFrame;
-import com.licretey.tank.net.*;
+import com.licretey.tank.net.msg.TankJoinMsg;
 import io.netty.bootstrap.Bootstrap;
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
-import io.netty.util.ReferenceCountUtil;
 
 public class TankClient {
     private Channel channel = null;

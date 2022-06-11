@@ -1,6 +1,6 @@
 package com.licretey.tank;
 
-import com.licretey.tank.net.TankJoinMsg;
+import com.licretey.tank.net.msg.TankJoinMsg;
 
 import java.awt.*;
 import java.util.Random;
@@ -188,7 +188,7 @@ public class Tank extends AbstactGameObject{
         int bulletX = x + this.width/2 - ResourceMgr.bulletU.getWidth()/2;
         int bulletY = y + this.height/2 - ResourceMgr.bulletU.getHeight()/2;
         // 使用tank的参数去创建一个子弹
-        Bullet bullet = new Bullet(bulletX, bulletY, dir, group);
+        Bullet bullet = new Bullet(this.id,bulletX, bulletY, dir, group);
         TankFrame.SINGLE_FRAME.getGm().add(bullet);
     }
 

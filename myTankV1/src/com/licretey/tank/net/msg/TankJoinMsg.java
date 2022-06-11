@@ -1,12 +1,15 @@
-package com.licretey.tank.net;
+package com.licretey.tank.net.msg;
 
 import com.licretey.tank.*;
+import com.licretey.tank.net.Msg;
+import com.licretey.tank.net.MsgType;
+import com.licretey.tank.net.TankClient;
 
 import java.io.*;
 import java.util.UUID;
 
 
-public class TankJoinMsg extends Msg{
+public class TankJoinMsg extends Msg {
     private int x,y;
     private Direction dir;
     private boolean moving;

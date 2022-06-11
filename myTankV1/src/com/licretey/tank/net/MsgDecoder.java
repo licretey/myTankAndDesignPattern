@@ -24,7 +24,7 @@ public class MsgDecoder extends ByteToMessageDecoder {
         byte[] bytes = new byte[length];
         buf.readBytes(bytes);
 
-        Msg msg = (Msg) Class.forName("com.licretey.tank.net."+msgType.toString()+"Msg")
+        Msg msg = (Msg) Class.forName("com.licretey.tank.net.msg."+msgType.toString()+"Msg")
                 .getDeclaredConstructor()
                 .newInstance();
         msg.parse(bytes);

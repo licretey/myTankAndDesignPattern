@@ -88,6 +88,15 @@
 ## 三 其它
 + slf4j slf4j日志框架
 + jdbc jdbc基础
++ jvm  jvm基础
+
+> 1.classloader过程
+> 
+> 1.1 loading
+> 
+> 1.2 linking：校验、预处理，设置静态变量的默认值、确定多态中的具体实现位置
+> 
+> 1.3 initializing：设置静态变量的初始值
 
 
 

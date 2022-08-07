@@ -10,6 +10,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="MSBDesignParttens" target="1.8" />
       <module name="myTankV1" target="1.8" />
     </bytecodeTargetLevel>
   </component>

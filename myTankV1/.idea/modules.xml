@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/../MSBDesignParttens/MSBDesignParttens.iml" filepath="$PROJECT_DIR$/../MSBDesignParttens/MSBDesignParttens.iml" />
       <module fileurl="file://$PROJECT_DIR$/myTankV1.iml" filepath="$PROJECT_DIR$/myTankV1.iml" />
     </modules>
   </component>
